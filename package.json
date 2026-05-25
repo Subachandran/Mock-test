@@ -1,0 +1,23 @@
+{
+  "name": "mock-test",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "generate-manifest": "node scripts/generate-manifest.js",
+    "predev": "npm run generate-manifest",
+    "dev": "vite",
+    "prebuild": "npm run generate-manifest",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.5.2",
+    "vite": "^6.3.5"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "title": "DBMS, Angular & Security",
+  "description": "Database concepts, AngularJS framework, and security fundamentals.",
+  "icon": "🛡️",
+  "color": "#4f46e5",
+  "roundTitles": {
+    "round1": "Round 1",
+    "round2": "Round 2"
+  },
+  "roundDescriptions": {
+    "round1": "DBMS / SQL, Security, and Angular / AngularJS fundamentals",
+    "round2": "Advanced topics and scenarios"
+  }
+}

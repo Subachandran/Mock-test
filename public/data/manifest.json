@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-05-25T13:23:46.971Z",
+  "sections": [
+    {
+      "id": "dbms-angular-security",
+      "title": "DBMS, Angular & Security",
+      "description": "Database concepts, AngularJS framework, and security fundamentals.",
+      "icon": "🛡️",
+      "color": "#4f46e5",
+      "rounds": [
+        {
+          "id": "round1",
+          "title": "Round 1",
+          "description": "DBMS / SQL, Security, and Angular / AngularJS fundamentals",
+          "csvPath": "/data/dbms-angular-security/round1.csv",
+          "questionCount": 60,
+          "categories": [
+            {
+              "topic": "Angular / AngularJS",
+              "count": 15
+            },
+            {
+              "topic": "DBMS / SQL",
+              "count": 25
+            },
+            {
+              "topic": "Security",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "id": "round2",
+          "title": "Round 2",
+          "description": "Advanced topics and scenarios",
+          "csvPath": "/data/dbms-angular-security/round2.csv",
+          "questionCount": 3,
+          "categories": [
+            {
+              "topic": "Angular / AngularJS",
+              "count": 1
+            },
+            {
+              "topic": "DBMS / SQL",
+              "count": 1
+            },
+            {
+              "topic": "Security",
+              "count": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

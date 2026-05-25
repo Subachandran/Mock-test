@@ -780,6 +780,53 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   text-align: center;
 }
 
+/* Leave quiz modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.modal-card {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+}
+.modal-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.65rem;
+}
+.modal-body {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+}
+.modal-actions {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+.modal-actions .btn-primary {
+  flex: 1;
+  min-width: 120px;
+}
+.modal-actions .btn-secondary {
+  flex: 1;
+  min-width: 120px;
+}
+
 /* Topic & difficulty badges */
 .topic-badge {
   display: inline-block;

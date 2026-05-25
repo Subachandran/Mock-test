@@ -15,6 +15,8 @@ import {
   isDeferred,
 } from '../utils/quizNavigation';
 import Timer from '../components/Timer';
+import LeaveQuizModal from '../components/LeaveQuizModal';
+import { useQuizLeaveGuard, setQuizActive } from '../hooks/useQuizLeaveGuard';
 
 export default function QuizPage() {
   const { sectionId, roundId } = useParams();
@@ -33,6 +35,8 @@ export default function QuizPage() {
   const [selected, setSelected] = useState(null);
   const [showFinishConfirm, setShowFinishConfirm] = useState(false);
   const advancingRef = useRef(false);
+
+  const { leaveModalOpen, promptLeave, confirmLeave, cancelLeave } = useQuizLeaveGuard(started);
 
   useEffect(() => {
     if (!round) return;
@@ -65,6 +69,7 @@ export default function QuizPage() {
       questions.forEach((q) => {
         if (finalAnswers[q.id] === q.correctAnswer) score++;
       });
+      setQuizActive(false);
       saveAttempt(sectionId, roundId, {
         sectionId,
         roundId,
@@ -309,8 +314,16 @@ export default function QuizPage() {
     }
   };
 
+  const sectionPath = `/section/${sectionId}`;
+
   return (
     <div className="quiz-container">
+      <LeaveQuizModal
+        open={leaveModalOpen}
+        onStay={cancelLeave}
+        onLeave={confirmLeave}
+      />
+
       <div className="quiz-header">
         <div className="quiz-progress-wrap">
           <div className="quiz-progress-meta">
@@ -482,9 +495,14 @@ export default function QuizPage() {
       </div>
 
       <div className="quiz-footer-exit">
-        <Link to={`/section/${sectionId}`} className="btn btn-ghost" style={{ fontSize: '0.78rem' }}>
+        <button
+          type="button"
+          className="btn btn-ghost"
+          style={{ fontSize: '0.78rem' }}
+          onClick={() => promptLeave(sectionPath)}
+        >
           Exit test
-        </Link>
+        </button>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-25T13:23:46.971Z",
+  "generatedAt": "2026-05-25T13:29:05.060Z",
   "sections": [
     {
       "id": "dbms-angular-security",
@@ -34,19 +34,19 @@
           "title": "Round 2",
           "description": "Advanced topics and scenarios",
           "csvPath": "/data/dbms-angular-security/round2.csv",
-          "questionCount": 3,
+          "questionCount": 60,
           "categories": [
             {
               "topic": "Angular / AngularJS",
-              "count": 1
+              "count": 15
             },
             {
               "topic": "DBMS / SQL",
-              "count": 1
+              "count": 25
             },
             {
               "topic": "Security",
-              "count": 1
+              "count": 20
             }
           ]
         }

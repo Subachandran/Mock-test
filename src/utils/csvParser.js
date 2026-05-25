@@ -73,7 +73,8 @@ function parseCsvLine(line) {
 }
 
 export async function loadQuestionsFromCsv(csvPath) {
-  const response = await fetch(csvPath);
+  const url = csvPath.includes('?') ? csvPath : `${csvPath}?v=${Date.now()}`;
+  const response = await fetch(url, { cache: 'no-store' });
   if (!response.ok) {
     throw new Error(`Failed to load questions from ${csvPath}`);
   }

@@ -19,14 +19,17 @@ export function isQuizActive() {
  * Guards leaving an in-progress quiz: in-app navigation, browser back, tab close.
  * pendingDestination: string path or () => void
  */
-export function useQuizLeaveGuard(active) {
+export function useQuizLeaveGuard(active, finishingRef) {
   const navigate = useNavigate();
   const [leaveModalOpen, setLeaveModalOpen] = useState(false);
   const pendingDestination = useRef(null);
 
   const blocker = useBlocker(
-    ({ currentLocation, nextLocation }) =>
-      active && currentLocation.pathname !== nextLocation.pathname
+    ({ currentLocation, nextLocation }) => {
+      if (finishingRef?.current) return false;
+      if (!isQuizActive()) return false;
+      return active && currentLocation.pathname !== nextLocation.pathname;
+    }
   );
 
   useEffect(() => {
@@ -37,7 +40,12 @@ export function useQuizLeaveGuard(active) {
   }, [blocker.state]);
 
   useEffect(() => {
-    setQuizActive(active);
+    if (active) {
+      setQuizActive(true);
+    } else {
+      setQuizActive(false);
+    }
+
     if (!active) return undefined;
 
     const onBeforeUnload = (e) => {
@@ -48,6 +56,7 @@ export function useQuizLeaveGuard(active) {
     window.addEventListener('beforeunload', onBeforeUnload);
     return () => {
       window.removeEventListener('beforeunload', onBeforeUnload);
+      setQuizActive(false);
     };
   }, [active]);
 

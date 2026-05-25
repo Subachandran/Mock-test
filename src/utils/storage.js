@@ -21,14 +21,27 @@ export function clearAttempt(sectionId, roundId) {
   localStorage.removeItem(key);
 }
 
+/** Completed only if finished and question count matches current CSV. */
+export function isAttemptComplete(attempt, expectedQuestionCount) {
+  if (!attempt?.completedAt) return false;
+  const expected = expectedQuestionCount ?? 0;
+  if (expected <= 0) return false;
+
+  const storedTotal = attempt.total ?? attempt.questions?.length ?? 0;
+  return storedTotal === expected;
+}
+
 export function getSectionProgress(sectionId, rounds) {
   return rounds.map((round) => {
     const attempt = loadAttempt(sectionId, round.id);
+    const expectedCount = round.questionCount ?? 0;
+    const completed = isAttemptComplete(attempt, expectedCount);
+
     return {
       roundId: round.id,
-      completed: !!attempt?.completedAt,
-      score: attempt?.score ?? null,
-      total: attempt?.total ?? null,
+      completed,
+      score: completed ? attempt.score : null,
+      total: completed ? attempt.total : null,
     };
   });
 }

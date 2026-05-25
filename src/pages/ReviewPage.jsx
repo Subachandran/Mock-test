@@ -1,7 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { useSections } from '../context/SectionsContext';
-import { loadAttempt } from '../utils/storage';
+import { loadAttempt, isAttemptComplete } from '../utils/storage';
+import { setQuizActive } from '../hooks/useQuizLeaveGuard';
 import { getOptionText } from '../utils/csvParser';
 import { groupQuestionsByTopic, getTopicStyle, getDifficultyClass, getUniqueTopics } from '../utils/topics';
 
@@ -44,9 +45,17 @@ export default function ReviewPage() {
 
   const grouped = useMemo(() => groupQuestionsByTopic(filtered), [filtered]);
 
+  useEffect(() => {
+    setQuizActive(false);
+  }, []);
+
   if (loading) return <div className="loading-state"><div className="loading-spinner" /><p>Loading…</p></div>;
   if (!section || !round) return <Navigate to="/" replace />;
-  if (!attempt?.completedAt) return <Navigate to={`/section/${sectionId}/${roundId}/quiz`} replace />;
+
+  const expectedCount = round.questionCount ?? 0;
+  if (!isAttemptComplete(attempt, expectedCount)) {
+    return <Navigate to={`/section/${sectionId}/${roundId}/quiz`} replace />;
+  }
 
   const renderQuestion = (q) => {
     const selected = answers[q.id];

@@ -34,18 +34,25 @@ export default function QuizPage() {
   const [deferredIds, setDeferredIds] = useState([]);
   const [selected, setSelected] = useState(null);
   const [showFinishConfirm, setShowFinishConfirm] = useState(false);
+  const [finishSkipCount, setFinishSkipCount] = useState(0);
   const advancingRef = useRef(false);
+  const finishingRef = useRef(false);
 
-  const { leaveModalOpen, promptLeave, confirmLeave, cancelLeave } = useQuizLeaveGuard(started);
+  const { leaveModalOpen, promptLeave, confirmLeave, cancelLeave } = useQuizLeaveGuard(
+    started,
+    finishingRef
+  );
 
   useEffect(() => {
     if (!round) return;
     setLoading(true);
+    setError(null);
+
     loadQuestionsFromCsv(round.csvPath)
       .then(setQuestions)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [round]);
+  }, [round?.csvPath, roundId]);
 
   const saveCurrentAnswer = useCallback(() => {
     const q = questions[currentIndex];
@@ -65,11 +72,13 @@ export default function QuizPage() {
 
   const finishQuiz = useCallback(
     (finalAnswers) => {
+      finishingRef.current = true;
+      setQuizActive(false);
+
       let score = 0;
       questions.forEach((q) => {
         if (finalAnswers[q.id] === q.correctAnswer) score++;
       });
-      setQuizActive(false);
       saveAttempt(sectionId, roundId, {
         sectionId,
         roundId,
@@ -92,6 +101,7 @@ export default function QuizPage() {
       if (nextIdx === -1) {
         const unanswered = questions.filter((q) => !isAnswered(finalAnswers, q.id)).length;
         if (unanswered > 0) {
+          setFinishSkipCount(unanswered);
           setShowFinishConfirm(true);
         } else {
           finishQuiz(finalAnswers);
@@ -154,6 +164,17 @@ export default function QuizPage() {
     const finalAnswers = saveCurrentAnswer();
     finishQuiz(finalAnswers);
   }, [saveCurrentAnswer, finishQuiz]);
+
+  const handleFinishTest = useCallback(() => {
+    const finalAnswers = saveCurrentAnswer();
+    const remaining = questions.filter((q) => !isAnswered(finalAnswers, q.id)).length;
+    if (remaining > 0) {
+      setFinishSkipCount(remaining);
+      setShowFinishConfirm(true);
+    } else {
+      finishQuiz(finalAnswers);
+    }
+  }, [saveCurrentAnswer, questions, finishQuiz]);
 
   const { secondsLeft, progress, reset } = useTimer(
     totalTimeSeconds,
@@ -250,6 +271,12 @@ export default function QuizPage() {
               </span>
             </li>
             <li>
+              <span className="quiz-rules-icon">✅</span>
+              <span>
+                <strong style={{ color: 'var(--text)' }}>Finish test</strong> anytime — unanswered questions count as skipped
+              </span>
+            </li>
+            <li>
               <span className="quiz-rules-icon">↩️</span>
               <span>
                 Use <strong style={{ color: 'var(--text)' }}>Come back later</strong> to skip a question and return before you submit
@@ -302,18 +329,6 @@ export default function QuizPage() {
   const unansweredCount = questions.length - answeredCount;
   const progressPct = questions.length ? (answeredCount / questions.length) * 100 : 0;
   const onDeferredQuestion = isDeferred(deferredIds, question.id);
-  const isLastPass =
-    getNextQuestionIndex(currentIndex, questions, answers, deferredIds) === -1;
-
-  const handleSubmitClick = () => {
-    const finalAnswers = saveCurrentAnswer();
-    if (unansweredCount > 0) {
-      setShowFinishConfirm(true);
-    } else {
-      finishQuiz(finalAnswers);
-    }
-  };
-
   const sectionPath = `/section/${sectionId}`;
 
   return (
@@ -335,6 +350,7 @@ export default function QuizPage() {
             </span>
             <span className="quiz-round-label">
               {answeredCount} answered
+              {unansweredCount > 0 && ` · ${unansweredCount} left`}
               {deferredPending > 0 && ` · ${deferredPending} to revisit`}
             </span>
           </div>
@@ -342,12 +358,17 @@ export default function QuizPage() {
             <div className="quiz-progress-fill" style={{ width: `${progressPct}%` }} />
           </div>
         </div>
-        <Timer
-          secondsLeft={secondsLeft}
-          progress={progress}
-          isUrgent={totalTimerUrgent}
-          label="Total left"
-        />
+        <div className="quiz-header-actions">
+          <button type="button" className="btn btn-finish-test" onClick={handleFinishTest}>
+            Finish test
+          </button>
+          <Timer
+            secondsLeft={secondsLeft}
+            progress={progress}
+            isUrgent={totalTimerUrgent}
+            label="Total left"
+          />
+        </div>
       </div>
 
       <div className={`question-time-strip ${questionOverBudget ? 'question-time-warning' : ''}`}>
@@ -362,28 +383,28 @@ export default function QuizPage() {
 
       {showFinishConfirm && (
         <div className="quiz-finish-banner">
+          <p className="quiz-finish-banner-title">Finish test early?</p>
           <p>
-            <strong>{unansweredCount} question{unansweredCount !== 1 ? 's' : ''}</strong> still unanswered
-            {deferredPending > 0 && ` (${deferredPending} marked come back later)`}.
+            <strong>{finishSkipCount}</strong> question{finishSkipCount !== 1 ? 's' : ''} will be
+            marked as <strong>skipped</strong> in your results.
           </p>
           <div className="quiz-finish-banner-actions">
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => {
-                setShowFinishConfirm(false);
-                const idx = questions.findIndex((q) => !isAnswered(answers, q.id));
-                if (idx >= 0) goToIndex(idx);
-              }}
+              onClick={() => setShowFinishConfirm(false)}
             >
               Continue test
             </button>
             <button
               type="button"
               className="btn btn-primary"
-              onClick={() => finishQuiz(saveCurrentAnswer())}
+              onClick={() => {
+                setShowFinishConfirm(false);
+                finishQuiz(saveCurrentAnswer());
+              }}
             >
-              Submit anyway
+              Finish & see results
             </button>
           </div>
         </div>
@@ -456,15 +477,9 @@ export default function QuizPage() {
           Come back later
         </button>
 
-        {isLastPass ? (
-          <button type="button" className="btn btn-primary" onClick={handleSubmitClick}>
-            Submit test
-          </button>
-        ) : (
-          <button type="button" className="btn btn-primary" onClick={goToNext}>
-            Next →
-          </button>
-        )}
+        <button type="button" className="btn btn-primary" onClick={goToNext}>
+          Next →
+        </button>
       </div>
 
       <div className="question-palette">

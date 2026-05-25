@@ -59,7 +59,9 @@ public/data/
 
 If `meta.json` is missing, the title is derived from the folder name.
 
-After adding a folder, run `npm run dev` or `npm run build` — the manifest regenerates automatically and the new section appears on the home page.
+After adding a folder, run `npm run dev` or `npm run build` once so `manifest.json` lists the new section. **Question counts and categories are read live from each CSV** when you open the app (no rebuild needed after editing questions).
+
+If you change how many questions are in a CSV, refresh the page or revisit the section — completion badges only count attempts that match the current question count.
 
 ## Customize Timer
 

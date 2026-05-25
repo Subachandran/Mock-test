@@ -1,22 +1,59 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { hydrateSectionFromCsv } from '../utils/roundMeta';
 
 const SectionsContext = createContext(null);
+
+async function loadManifest() {
+  const res = await fetch(`/data/manifest.json?v=${Date.now()}`, { cache: 'no-store' });
+  if (!res.ok) throw new Error('Could not load sections. Check public/data/manifest.json exists.');
+  const data = await res.json();
+  return data.sections || [];
+}
+
+async function loadHydratedSections() {
+  const rawSections = await loadManifest();
+  return Promise.all(rawSections.map(hydrateSectionFromCsv));
+}
 
 export function SectionsProvider({ children }) {
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetch('/data/manifest.json')
-      .then((res) => {
-        if (!res.ok) throw new Error('Could not load sections. Run npm run dev to regenerate manifest.');
-        return res.json();
-      })
-      .then((data) => setSections(data.sections || []))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+  const reloadSections = useCallback(async () => {
+    setError(null);
+    try {
+      const hydrated = await loadHydratedSections();
+      setSections(hydrated);
+    } catch (err) {
+      setError(err.message);
+    }
   }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    reloadSections().finally(() => setLoading(false));
+  }, [reloadSections]);
+
+  useEffect(() => {
+    const onFocus = () => reloadSections();
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
+  }, [reloadSections]);
+
+  const refreshSection = useCallback(
+    async (sectionId) => {
+      const rawSections = await loadManifest();
+      const raw = rawSections.find((s) => s.id === sectionId);
+      if (!raw) return;
+
+      const hydrated = await hydrateSectionFromCsv(raw);
+      setSections((prev) =>
+        prev.map((s) => (s.id === sectionId ? hydrated : s))
+      );
+    },
+    []
+  );
 
   const getSection = useCallback(
     (sectionId) => sections.find((s) => s.id === sectionId),
@@ -32,7 +69,17 @@ export function SectionsProvider({ children }) {
   );
 
   return (
-    <SectionsContext.Provider value={{ sections, loading, error, getSection, getRound }}>
+    <SectionsContext.Provider
+      value={{
+        sections,
+        loading,
+        error,
+        reloadSections,
+        refreshSection,
+        getSection,
+        getRound,
+      }}
+    >
       {children}
     </SectionsContext.Provider>
   );

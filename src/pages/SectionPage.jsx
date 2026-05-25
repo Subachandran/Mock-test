@@ -1,14 +1,19 @@
+import { useEffect } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { useSections } from '../context/SectionsContext';
-import { loadAttempt } from '../utils/storage';
+import { loadAttempt, isAttemptComplete } from '../utils/storage';
 import { getTopicStyle } from '../utils/topics';
 
 export default function SectionPage() {
   const { sectionId } = useParams();
-  const { getSection, loading } = useSections();
+  const { getSection, loading, refreshSection } = useSections();
   const section = getSection(sectionId);
 
-  if (loading) {
+  useEffect(() => {
+    if (sectionId) refreshSection(sectionId);
+  }, [sectionId, refreshSection]);
+
+  if (loading && !section) {
     return (
       <div className="loading-state">
         <div className="loading-spinner" />
@@ -27,11 +32,14 @@ export default function SectionPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.35rem' }}>
           <div
             style={{
-              width: 40, height: 40,
+              width: 40,
+              height: 40,
               background: `${section.color}1a`,
               border: `1px solid ${section.color}33`,
               borderRadius: 10,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               fontSize: '1.2rem',
             }}
           >
@@ -45,8 +53,12 @@ export default function SectionPage() {
       <div className="rounds-list">
         {section.rounds.map((round, idx) => {
           const attempt = loadAttempt(sectionId, round.id);
-          const completed = !!attempt?.completedAt;
-          const scorePct = completed ? Math.round((attempt.score / attempt.total) * 100) : 0;
+          const expectedCount = round.questionCount ?? 0;
+          const completed = isAttemptComplete(attempt, expectedCount);
+          const scorePct =
+            completed && attempt.total
+              ? Math.round((attempt.score / attempt.total) * 100)
+              : 0;
 
           return (
             <div key={round.id} className={`round-card ${completed ? 'completed' : ''}`}>
@@ -54,7 +66,10 @@ export default function SectionPage() {
                 <div className="round-header">
                   <div className="round-number-badge">{idx + 1}</div>
                   <div>
-                    <h4 className="round-info" style={{ fontSize: '1rem', fontWeight: 700, letterSpacing: '-0.01em' }}>
+                    <h4
+                      className="round-info"
+                      style={{ fontSize: '1rem', fontWeight: 700, letterSpacing: '-0.01em' }}
+                    >
                       {round.title}
                     </h4>
                     {round.description && (
@@ -65,11 +80,17 @@ export default function SectionPage() {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-                  <span className="badge">{round.questionCount} questions</span>
-                  {completed && (
-                    <span className="badge badge-success">✓ Completed</span>
-                  )}
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '0.5rem',
+                    alignItems: 'center',
+                    marginBottom: '0.5rem',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <span className="badge">{expectedCount} questions</span>
+                  {completed && <span className="badge badge-success">✓ Completed</span>}
                 </div>
 
                 {round.categories?.length > 0 && (
@@ -115,15 +136,24 @@ export default function SectionPage() {
               <div className="round-actions">
                 {completed ? (
                   <>
-                    <Link to={`/section/${sectionId}/${round.id}/review`} className="btn btn-secondary">
+                    <Link
+                      to={`/section/${sectionId}/${round.id}/review`}
+                      className="btn btn-secondary"
+                    >
                       Review
                     </Link>
-                    <Link to={`/section/${sectionId}/${round.id}/quiz`} className="btn btn-primary">
+                    <Link
+                      to={`/section/${sectionId}/${round.id}/quiz`}
+                      className="btn btn-primary"
+                    >
                       Retake
                     </Link>
                   </>
                 ) : (
-                  <Link to={`/section/${sectionId}/${round.id}/quiz`} className="btn btn-primary">
+                  <Link
+                    to={`/section/${sectionId}/${round.id}/quiz`}
+                    className="btn btn-primary"
+                  >
                     Start Test →
                   </Link>
                 )}

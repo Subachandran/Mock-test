@@ -65,6 +65,12 @@
       "bg": "rgba(251, 191, 36, 0.18)",
       "border": "rgba(251, 191, 36, 0.45)",
       "accent": "#fbbf24"
+    },
+    "Operating System": {
+      "text": "#86efac",
+      "bg": "rgba(74, 222, 128, 0.18)",
+      "border": "rgba(74, 222, 128, 0.45)",
+      "accent": "#4ade80"
     }
   }
 }

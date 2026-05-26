@@ -69,7 +69,7 @@ After adding a folder, run `npm run dev` or `npm run build` once so `manifest.js
     "dbms-angular-security",
     "oop-software-engineering",
     "rest-api-web-basics",
-    "computer-network"
+    "computer-network-operating-system"
   ]
 }
 ```

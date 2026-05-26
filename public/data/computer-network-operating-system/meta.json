@@ -1,0 +1,14 @@
+{
+  "title": "Computer Networks & Operating System",
+  "description": "Networking fundamentals and operating system concepts including processes, memory, and scheduling.",
+  "icon": "🖥️",
+  "color": "#7c3aed",
+  "roundTitles": {
+    "round1": "Round 1",
+    "round2": "Round 2"
+  },
+  "roundDescriptions": {
+    "round1": "Networking basics and OS fundamentals",
+    "round2": "Advanced networking, scheduling, memory, and OS concepts"
+  }
+}

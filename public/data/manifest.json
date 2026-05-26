@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-26T19:11:34.091Z",
+  "generatedAt": "2026-05-26T19:18:13.748Z",
   "sections": [
     {
       "id": "dbms-angular-security",
@@ -139,21 +139,25 @@
       ]
     },
     {
-      "id": "computer-network",
-      "title": "Computer Networks",
-      "description": "OSI/TCP-IP models, protocols, addressing, and networking fundamentals.",
-      "icon": "📡",
+      "id": "computer-network-operating-system",
+      "title": "Computer Networks & Operating System",
+      "description": "Networking fundamentals and operating system concepts including processes, memory, and scheduling.",
+      "icon": "🖥️",
       "color": "#7c3aed",
       "rounds": [
         {
           "id": "round1",
           "title": "Round 1",
-          "description": "Networking basics, protocols, and common ports",
-          "csvPath": "/data/computer-network/round1.csv",
-          "questionCount": 30,
+          "description": "Networking basics and OS fundamentals",
+          "csvPath": "/data/computer-network-operating-system/round1.csv",
+          "questionCount": 60,
           "categories": [
             {
               "topic": "Computer Networks",
+              "count": 30
+            },
+            {
+              "topic": "Operating System",
               "count": 30
             }
           ]
@@ -161,12 +165,16 @@
         {
           "id": "round2",
           "title": "Round 2",
-          "description": "OSI/TCP-IP layers, TCP, routing, and advanced concepts",
-          "csvPath": "/data/computer-network/round2.csv",
-          "questionCount": 30,
+          "description": "Advanced networking, scheduling, memory, and OS concepts",
+          "csvPath": "/data/computer-network-operating-system/round2.csv",
+          "questionCount": 60,
           "categories": [
             {
               "topic": "Computer Networks",
+              "count": 30
+            },
+            {
+              "topic": "Operating System",
               "count": 30
             }
           ]

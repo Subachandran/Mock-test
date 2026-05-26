@@ -71,6 +71,12 @@ export function buildTopicCatalog(sections) {
   return [...catalog.values()].sort((a, b) => a.topic.localeCompare(b.topic));
 }
 
+/** Sections that still need to be completed before a topic (or more of it) unlocks. */
+export function getLockedSectionsForTopic(catalogEntry) {
+  if (!catalogEntry?.sections) return [];
+  return catalogEntry.sections.filter((s) => !s.unlocked);
+}
+
 export function getSectionUnlockState(section) {
   const complete = isSectionComplete(section.id, section.rounds);
   const progress = (section.rounds || []).map((round) => ({

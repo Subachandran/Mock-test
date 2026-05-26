@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { useSections } from '../context/SectionsContext';
+import StudyLockMark from '../components/StudyLockMark';
 import StudyQuestionCard from '../components/StudyQuestionCard';
+import StudyTopicLabel from '../components/StudyTopicLabel';
 import {
   buildTopicCatalog,
+  getLockedSectionsForTopic,
   loadUnlockedTopicQuestions,
   slugToTopic,
   topicToSlug,
@@ -86,8 +89,45 @@ export default function StudyTopicPage() {
     return <Navigate to="/study" replace />;
   }
 
+  const lockedSections = catalogEntry ? getLockedSectionsForTopic(catalogEntry) : [];
+  const primaryLockedSection = lockedSections[0];
+
   if (!isUnlocked) {
-    return <Navigate to="/study" replace />;
+    return (
+      <div>
+        <Link to="/study" className="back-link">
+          ← Study Review
+        </Link>
+
+        <div className="page-header study-topic-page-header">
+          <h2>
+            <StudyTopicLabel topic={topic} style={topicStyle} className="study-topic-label-page" />
+          </h2>
+        </div>
+
+        <div
+          className="study-topic-locked-panel"
+          style={{ '--topic-accent': topicStyle.accent }}
+        >
+          <div className="study-topic-card-body">
+            <p className="study-topic-card-status">
+              <StudyLockMark size="sm" />
+              {catalogEntry.totalCount} question{catalogEntry.totalCount !== 1 ? 's' : ''} locked
+            </p>
+            <p className="study-topic-card-hint">Complete section rounds to unlock this topic</p>
+          </div>
+          {primaryLockedSection && (
+            <Link
+              to={`/section/${primaryLockedSection.sectionId}`}
+              className="btn btn-primary btn-sm study-topic-unlock-btn"
+              aria-label={`Unlock ${topic}`}
+            >
+              Unlock
+            </Link>
+          )}
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -96,20 +136,9 @@ export default function StudyTopicPage() {
         ← Study Review
       </Link>
 
-      <div className="page-header">
+      <div className="page-header study-topic-page-header">
         <h2>
-          <span
-            className="topic-badge-sm topic-badge-pill"
-            style={{
-              color: topicStyle.text,
-              background: topicStyle.bg,
-              border: `1px solid ${topicStyle.border}`,
-              verticalAlign: 'middle',
-              marginRight: '0.5rem',
-            }}
-          >
-            {topic}
-          </span>
+          <StudyTopicLabel topic={topic} style={topicStyle} className="study-topic-label-page" />
         </h2>
         <p>
           {loadingQuestions
@@ -120,15 +149,22 @@ export default function StudyTopicPage() {
 
       {catalogEntry.lockedCount > 0 && (
         <div className="study-topic-banner">
-          <span aria-hidden>🔒</span>
-          <span>
-            {catalogEntry.lockedCount} more question
-            {catalogEntry.lockedCount !== 1 ? 's' : ''} in this topic will unlock when you complete:{' '}
-            {catalogEntry.sections
-              .filter((s) => !s.unlocked)
-              .map((s) => s.title)
-              .join(', ')}
+          <span className="study-topic-banner-leading" aria-hidden>
+            <StudyLockMark size="sm" />
           </span>
+          <span className="study-topic-banner-text">
+            {catalogEntry.lockedCount} more question
+            {catalogEntry.lockedCount !== 1 ? 's' : ''} locked — finish section rounds to unlock
+          </span>
+          {primaryLockedSection && (
+            <Link
+              to={`/section/${primaryLockedSection.sectionId}`}
+              className="btn btn-primary btn-sm study-topic-unlock-btn"
+              aria-label={`Unlock remaining ${topic} questions`}
+            >
+              Unlock
+            </Link>
+          )}
         </div>
       )}
 

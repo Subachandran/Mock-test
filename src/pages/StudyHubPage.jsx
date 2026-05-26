@@ -1,7 +1,14 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import StudyLockMark from '../components/StudyLockMark';
+import StudyTopicLabel from '../components/StudyTopicLabel';
 import { useSections } from '../context/SectionsContext';
-import { buildTopicCatalog, getSectionUnlockState, topicToSlug } from '../utils/studyReview';
+import {
+  buildTopicCatalog,
+  getLockedSectionsForTopic,
+  getSectionUnlockState,
+  topicToSlug,
+} from '../utils/studyReview';
 import { useTopicStyle } from '../utils/topics';
 import { getSectionProgress } from '../utils/storage';
 
@@ -80,8 +87,7 @@ export default function StudyHubPage() {
       <section className="study-block study-block-primary">
         <h3 className="study-block-title">By topic</h3>
         <p className="study-block-desc">
-          Topics are built from every section&apos;s question bank. Only topics from completed
-          sections can be opened.
+          Locked topics need their section rounds finished first. Unlocked topics open for review.
         </p>
 
         {sortedTopics.length === 0 ? (
@@ -93,51 +99,8 @@ export default function StudyHubPage() {
             {sortedTopics.map((entry) => {
               const style = getTopicStyle(entry.topic);
               const isUnlocked = entry.unlockedCount > 0;
-              const lockedSectionTitles = entry.sections
-                .filter((s) => !s.unlocked)
-                .map((s) => s.title);
-
-              const inner = (
-                <>
-                  <div className="study-topic-card-top">
-                    <span
-                      className="topic-badge-sm topic-badge-pill"
-                      style={{
-                        color: style.text,
-                        background: style.bg,
-                        border: `1px solid ${style.border}`,
-                      }}
-                    >
-                      {entry.topic}
-                    </span>
-                    {!isUnlocked && <span className="study-lock-icon" aria-hidden>🔒</span>}
-                  </div>
-                  <div className="study-topic-card-body">
-                    <p className="study-topic-card-meta">
-                      {isUnlocked ? (
-                        <>
-                          <strong>{entry.unlockedCount}</strong> question
-                          {entry.unlockedCount !== 1 ? 's' : ''} available
-                          {entry.lockedCount > 0 && (
-                            <> · {entry.lockedCount} more locked</>
-                          )}
-                        </>
-                      ) : (
-                        <>
-                          {entry.totalCount} question{entry.totalCount !== 1 ? 's' : ''} locked
-                        </>
-                      )}
-                    </p>
-                    {!isUnlocked && lockedSectionTitles.length > 0 && (
-                      <p className="study-topic-card-hint">
-                        Complete: {lockedSectionTitles.join(', ')}
-                      </p>
-                    )}
-                  </div>
-                  {isUnlocked && <span className="study-topic-card-arrow" aria-hidden>→</span>}
-                </>
-              );
-
+              const lockedSections = getLockedSectionsForTopic(entry);
+              const primaryLockedSection = lockedSections[0];
               if (isUnlocked) {
                 return (
                   <Link
@@ -146,7 +109,21 @@ export default function StudyHubPage() {
                     className="study-topic-card study-topic-card-unlocked"
                     style={{ '--topic-accent': style.accent }}
                   >
-                    {inner}
+                    <div className="study-topic-card-body">
+                      <StudyTopicLabel topic={entry.topic} style={style} />
+                      <span className="study-topic-card-meta">
+                        <span>{entry.unlockedCount} available</span>
+                        {entry.lockedCount > 0 && (
+                          <span className="study-topic-card-meta-locked">
+                            <StudyLockMark size="sm" />
+                            {entry.lockedCount} locked
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                    <span className="study-topic-card-arrow" aria-hidden>
+                      →
+                    </span>
                   </Link>
                 );
               }
@@ -155,9 +132,27 @@ export default function StudyHubPage() {
                 <div
                   key={entry.topic}
                   className="study-topic-card study-topic-card-locked"
-                  aria-disabled
+                  style={{ '--topic-accent': style.accent }}
                 >
-                  {inner}
+                  <div className="study-topic-card-body">
+                    <StudyTopicLabel topic={entry.topic} style={style} />
+                    <p className="study-topic-card-status">
+                      <StudyLockMark size="sm" />
+                      {entry.totalCount} question{entry.totalCount !== 1 ? 's' : ''} locked
+                    </p>
+                    <p className="study-topic-card-hint">
+                      Complete section rounds to unlock
+                    </p>
+                  </div>
+                  {primaryLockedSection && (
+                    <Link
+                      to={`/section/${primaryLockedSection.sectionId}`}
+                      className="btn btn-primary btn-sm study-topic-unlock-btn"
+                      aria-label={`Unlock ${entry.topic}`}
+                    >
+                      Unlock
+                    </Link>
+                  )}
                 </div>
               );
             })}

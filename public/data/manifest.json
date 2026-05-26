@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-26T19:22:44.356Z",
+  "generatedAt": "2026-05-26T19:29:23.094Z",
   "sections": [
     {
       "id": "dbms-angular-security",
@@ -55,41 +55,65 @@
     {
       "id": "oop-software-engineering",
       "title": "OOP & Software Engineering",
-      "description": "Object-oriented programming concepts and software engineering fundamentals.",
+      "description": "OOP, SOLID principles, SDLC, testing, and version control fundamentals.",
       "icon": "🧩",
       "color": "#059669",
       "rounds": [
         {
           "id": "round1",
           "title": "Round 1",
-          "description": "OOP basics and software engineering foundations",
+          "description": "OOP, SOLID, SDLC, testing, and DevOps basics",
           "csvPath": "/data/oop-software-engineering/round1.csv",
-          "questionCount": 30,
+          "questionCount": 60,
           "categories": [
             {
               "topic": "OOP",
-              "count": 15
+              "count": 25
             },
             {
               "topic": "Software Engineering",
-              "count": 15
+              "count": 9
+            },
+            {
+              "topic": "Software Testing",
+              "count": 11
+            },
+            {
+              "topic": "SOLID / Design Principles",
+              "count": 11
+            },
+            {
+              "topic": "Version Control / DevOps",
+              "count": 4
             }
           ]
         },
         {
           "id": "round2",
           "title": "Round 2",
-          "description": "Advanced OOP principles and SDLC/testing scenarios",
+          "description": "Advanced OOP, design principles, testing, and engineering scenarios",
           "csvPath": "/data/oop-software-engineering/round2.csv",
-          "questionCount": 30,
+          "questionCount": 60,
           "categories": [
             {
               "topic": "OOP",
-              "count": 15
+              "count": 20
             },
             {
               "topic": "Software Engineering",
-              "count": 15
+              "count": 10
+            },
+            {
+              "topic": "Software Testing",
+              "count": 13
+            },
+            {
+              "topic": "SOLID / Design Principles",
+              "count": 10
+            },
+            {
+              "topic": "Version Control / DevOps",
+              "count": 7
             }
           ]
         }

@@ -77,6 +77,24 @@
       "bg": "rgba(248, 113, 113, 0.18)",
       "border": "rgba(248, 113, 113, 0.45)",
       "accent": "#f87171"
+    },
+    "SOLID / Design Principles": {
+      "text": "#7be2bd",
+      "bg": "rgba(52, 211, 153, 0.18)",
+      "border": "rgba(52, 211, 153, 0.45)",
+      "accent": "#34d399"
+    },
+    "Software Testing": {
+      "text": "#6fe2f4",
+      "bg": "rgba(34, 211, 238, 0.18)",
+      "border": "rgba(34, 211, 238, 0.45)",
+      "accent": "#22d3ee"
+    },
+    "Version Control / DevOps": {
+      "text": "#c6b4fc",
+      "bg": "rgba(167, 139, 250, 0.18)",
+      "border": "rgba(167, 139, 250, 0.45)",
+      "accent": "#a78bfa"
     }
   }
 }

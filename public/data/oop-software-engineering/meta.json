@@ -1,6 +1,6 @@
 {
   "title": "OOP & Software Engineering",
-  "description": "Object-oriented programming concepts and software engineering fundamentals.",
+  "description": "OOP, SOLID principles, SDLC, testing, and version control fundamentals.",
   "icon": "🧩",
   "color": "#059669",
   "roundTitles": {
@@ -8,7 +8,7 @@
     "round2": "Round 2"
   },
   "roundDescriptions": {
-    "round1": "OOP basics and software engineering foundations",
-    "round2": "Advanced OOP principles and SDLC/testing scenarios"
+    "round1": "OOP, SOLID, SDLC, testing, and DevOps basics",
+    "round2": "Advanced OOP, design principles, testing, and engineering scenarios"
   }
 }

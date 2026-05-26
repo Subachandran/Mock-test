@@ -47,6 +47,18 @@
       "bg": "rgba(34, 211, 238, 0.18)",
       "border": "rgba(34, 211, 238, 0.45)",
       "accent": "#22d3ee"
+    },
+    "REST API": {
+      "text": "#fdba74",
+      "bg": "rgba(251, 146, 60, 0.18)",
+      "border": "rgba(251, 146, 60, 0.45)",
+      "accent": "#fb923c"
+    },
+    "Web Basics": {
+      "text": "#6ee7b7",
+      "bg": "rgba(52, 211, 153, 0.18)",
+      "border": "rgba(52, 211, 153, 0.45)",
+      "accent": "#34d399"
     }
   }
 }

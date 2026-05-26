@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-26T18:56:17.060Z",
+  "generatedAt": "2026-05-26T19:01:02.985Z",
   "sections": [
     {
       "id": "dbms-angular-security",
@@ -90,6 +90,49 @@
             {
               "topic": "Software Engineering",
               "count": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rest-api-web-basics",
+      "title": "REST API & Web Basics",
+      "description": "RESTful APIs, HTTP, and foundational web development concepts.",
+      "icon": "🌐",
+      "color": "#0284c7",
+      "rounds": [
+        {
+          "id": "round1",
+          "title": "Round 1",
+          "description": "REST API fundamentals and HTML/CSS/JS basics",
+          "csvPath": "/data/rest-api-web-basics/round1.csv",
+          "questionCount": 30,
+          "categories": [
+            {
+              "topic": "REST API",
+              "count": 20
+            },
+            {
+              "topic": "Web Basics",
+              "count": 10
+            }
+          ]
+        },
+        {
+          "id": "round2",
+          "title": "Round 2",
+          "description": "Advanced REST, CORS, and web security & performance",
+          "csvPath": "/data/rest-api-web-basics/round2.csv",
+          "questionCount": 30,
+          "categories": [
+            {
+              "topic": "REST API",
+              "count": 20
+            },
+            {
+              "topic": "Web Basics",
+              "count": 10
             }
           ]
         }

@@ -8,9 +8,10 @@ import {
   slugToTopic,
   topicToSlug,
 } from '../utils/studyReview';
-import { getTopicStyle } from '../utils/topics';
+import { useTopicStyle } from '../utils/topics';
 
 export default function StudyTopicPage() {
+  const getTopicStyle = useTopicStyle();
   const { topicSlug } = useParams();
   const topic = slugToTopic(topicSlug);
   const { sections, loading } = useSections();

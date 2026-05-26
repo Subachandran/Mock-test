@@ -1,4 +1,4 @@
-import { groupQuestionsByTopic, getTopicStyle } from '../utils/topics';
+import { useTopicStyle } from '../utils/topics';
 
 function ArcGauge({ pct }) {
   const size = 160;
@@ -35,7 +35,7 @@ function ArcGauge({ pct }) {
   );
 }
 
-function TopicBar({ topic, correct, total }) {
+function TopicBar({ topic, correct, total, getTopicStyle }) {
   const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
   const style = getTopicStyle(topic);
   return (
@@ -74,6 +74,7 @@ export default function ResultsShareCard({
   verdict,
   topicScores,
 }) {
+  const getTopicStyle = useTopicStyle();
   const completedLabel = completedAt
     ? new Date(completedAt).toLocaleString(undefined, {
         dateStyle: 'medium',
@@ -119,7 +120,7 @@ export default function ResultsShareCard({
           <p className="topic-score-label">Score by category</p>
           <div className="topic-score-grid">
             {topicScores.map((ts) => (
-              <TopicBar key={ts.topic} {...ts} />
+              <TopicBar key={ts.topic} {...ts} getTopicStyle={getTopicStyle} />
             ))}
           </div>
         </div>

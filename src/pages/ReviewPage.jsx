@@ -4,7 +4,7 @@ import { useSections } from '../context/SectionsContext';
 import { loadAttempt, isAttemptComplete } from '../utils/storage';
 import { setQuizActive } from '../hooks/useQuizLeaveGuard';
 import { getOptionText } from '../utils/csvParser';
-import { groupQuestionsByTopic, getTopicStyle, getDifficultyClass, getUniqueTopics } from '../utils/topics';
+import { groupQuestionsByTopic, useTopicStyle, getDifficultyClass, getUniqueTopics } from '../utils/topics';
 
 const STATUS_FILTERS = [
   { id: 'all', label: 'All' },
@@ -19,6 +19,7 @@ function getStatus(question, selected) {
 }
 
 export default function ReviewPage() {
+  const getTopicStyle = useTopicStyle();
   const { sectionId, roundId } = useParams();
   const { getSection, getRound, loading } = useSections();
   const section = getSection(sectionId);

@@ -6,7 +6,7 @@ import { loadQuestionsFromCsv } from '../utils/csvParser';
 import { saveAttempt } from '../utils/storage';
 import { useTimer } from '../hooks/useTimer';
 import { useQuestionElapsed } from '../hooks/useQuestionElapsed';
-import { groupQuestionsByTopic, getTopicStyle, getDifficultyClass } from '../utils/topics';
+import { groupQuestionsByTopic, useTopicStyle, getDifficultyClass } from '../utils/topics';
 import {
   getNextQuestionIndex,
   getQuestionStatus,
@@ -19,6 +19,7 @@ import LeaveQuizModal from '../components/LeaveQuizModal';
 import { useQuizLeaveGuard, setQuizActive } from '../hooks/useQuizLeaveGuard';
 
 export default function QuizPage() {
+  const getTopicStyle = useTopicStyle();
   const { sectionId, roundId } = useParams();
   const navigate = useNavigate();
   const { getSection, getRound, loading: sectionsLoading } = useSections();

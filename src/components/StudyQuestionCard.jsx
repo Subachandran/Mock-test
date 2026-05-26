@@ -1,7 +1,8 @@
 import { getOptionText } from '../utils/csvParser';
-import { getTopicStyle, getDifficultyClass } from '../utils/topics';
+import { useTopicStyle, getDifficultyClass } from '../utils/topics';
 
 export default function StudyQuestionCard({ question, index }) {
+  const getTopicStyle = useTopicStyle();
   const style = getTopicStyle(question.topic);
 
   return (

@@ -2,11 +2,12 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useSections } from '../context/SectionsContext';
 import { buildTopicCatalog, getSectionUnlockState, topicToSlug } from '../utils/studyReview';
-import { getTopicStyle } from '../utils/topics';
+import { useTopicStyle } from '../utils/topics';
 import { getSectionProgress } from '../utils/storage';
 
 export default function StudyHubPage() {
   const { sections, loading, error } = useSections();
+  const getTopicStyle = useTopicStyle();
 
   const topicCatalog = useMemo(
     () => (sections.length ? buildTopicCatalog(sections) : []),

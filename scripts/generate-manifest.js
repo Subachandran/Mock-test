@@ -2,6 +2,11 @@ import { readdir, readFile, writeFile } from 'fs/promises';
 import { join, basename } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import {
+  DEFAULT_TOPICS_FILE,
+  hashTopic,
+  styleFromAccent,
+} from './topicStylesShared.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = join(__dirname, '../public/data');
@@ -107,6 +112,51 @@ async function buildSectionManifest(sectionId) {
   };
 }
 
+async function syncTopicsJson(sections) {
+  const topicsPath = join(DATA_DIR, 'topics.json');
+  let existing = { ...DEFAULT_TOPICS_FILE, topics: {} };
+
+  try {
+    const parsed = JSON.parse(await readFile(topicsPath, 'utf-8'));
+    existing = {
+      default: parsed.default || DEFAULT_TOPICS_FILE.default,
+      palette: parsed.palette?.length ? parsed.palette : DEFAULT_TOPICS_FILE.palette,
+      topics: parsed.topics || {},
+    };
+  } catch {
+    /* first run — write defaults */
+  }
+
+  const topicNames = new Set();
+  sections.forEach((section) => {
+    section.rounds.forEach((round) => {
+      round.categories.forEach(({ topic }) => topicNames.add(topic || 'General'));
+    });
+  });
+
+  const topics = { ...existing.topics };
+  const palette = existing.palette;
+  let added = 0;
+
+  [...topicNames].sort().forEach((name) => {
+    if (topics[name]) return;
+    const accent = palette[hashTopic(name) % palette.length];
+    topics[name] = styleFromAccent(accent);
+    added += 1;
+  });
+
+  const output = {
+    default: existing.default,
+    palette: existing.palette,
+    topics,
+  };
+
+  await writeFile(topicsPath, JSON.stringify(output, null, 2));
+  console.log(
+    `Synced topics.json (${Object.keys(topics).length} topic(s)${added ? `, ${added} new` : ''}) → ${topicsPath}`
+  );
+}
+
 async function main() {
   const entries = await readdir(DATA_DIR, { withFileTypes: true });
   const sectionIds = entries
@@ -131,6 +181,8 @@ async function main() {
   const outPath = join(DATA_DIR, 'manifest.json');
   await writeFile(outPath, JSON.stringify(manifest, null, 2));
   console.log(`Generated manifest with ${sections.length} section(s) → ${outPath}`);
+
+  await syncTopicsJson(sections);
 }
 
 main().catch((err) => {

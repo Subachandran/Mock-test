@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { useSections } from '../context/SectionsContext';
 import { loadAttempt, isAttemptComplete } from '../utils/storage';
-import { getTopicStyle } from '../utils/topics';
+import { useTopicStyle } from '../utils/topics';
 
 export default function SectionPage() {
+  const getTopicStyle = useTopicStyle();
   const { sectionId } = useParams();
   const { getSection, loading, refreshSection } = useSections();
   const section = getSection(sectionId);

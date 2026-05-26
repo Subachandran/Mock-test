@@ -63,6 +63,33 @@ After adding a folder, run `npm run dev` or `npm run build` once so `manifest.js
 
 If you change how many questions are in a CSV, refresh the page or revisit the section — completion badges only count attempts that match the current question count.
 
+## Topic colors
+
+Topic badge colors live in `public/data/topics.json` (not in app code). The app loads this file at runtime, so you can edit colors on the server without redeploying.
+
+```json
+{
+  "default": { "text": "#c4b5fd", "bg": "...", "border": "...", "accent": "#a78bfa" },
+  "palette": ["#60a5fa", "#f87171", "#f472b6"],
+  "topics": {
+    "DBMS / SQL": {
+      "text": "#93c5fd",
+      "bg": "rgba(147, 197, 253, 0.18)",
+      "border": "rgba(147, 197, 253, 0.45)",
+      "accent": "#60a5fa"
+    }
+  }
+}
+```
+
+- **`topics`** — explicit colors per topic name (must match the CSV `topic` column exactly).
+- **`palette`** — accent colors used for any topic not listed in `topics` (stable hash assignment).
+- **`default`** — fallback when palette is empty.
+
+When you run `npm run dev` or `npm run build`, the manifest script scans all CSVs and **adds missing topics** to `topics.json` using the palette. Existing entries are never overwritten, so your custom colors are preserved.
+
+New topics in CSVs get a color automatically (via palette). Refresh the page to pick up edits to `topics.json`.
+
 ## Customize Timer
 
 Edit `src/config/appConfig.js` → `secondsPerQuestion` (default: 60). Total time = question count × this value. A warning appears if you spend more than this on one question.

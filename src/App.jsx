@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { SectionsProvider } from './context/SectionsContext';
+import { TopicsProvider } from './context/TopicsContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import SectionPage from './pages/SectionPage';
@@ -27,8 +28,10 @@ const router = createBrowserRouter([
 
 export default function App() {
   return (
-    <SectionsProvider>
-      <RouterProvider router={router} />
-    </SectionsProvider>
+    <TopicsProvider>
+      <SectionsProvider>
+        <RouterProvider router={router} />
+      </SectionsProvider>
+    </TopicsProvider>
   );
 }

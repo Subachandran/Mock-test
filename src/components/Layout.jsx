@@ -5,6 +5,7 @@ export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === '/';
+  const isStudy = location.pathname.startsWith('/study');
 
   const handleLeaveClick = (e, destination) => {
     if (!isQuizActive()) return;
@@ -33,16 +34,28 @@ export default function Layout() {
               <p>Exam Preparation</p>
             </div>
           </Link>
-          {!isHome && (
-            <Link
-              to="/"
-              className="btn btn-ghost"
-              style={{ fontSize: '0.8rem' }}
-              onClick={(e) => handleLeaveClick(e, '/')}
-            >
-              ← All Sections
-            </Link>
-          )}
+          <nav className="app-header-nav">
+            {!isHome && (
+              <Link
+                to="/"
+                className="btn btn-ghost"
+                style={{ fontSize: '0.8rem' }}
+                onClick={(e) => handleLeaveClick(e, '/')}
+              >
+                ← Sections
+              </Link>
+            )}
+            {!isStudy && (
+              <Link
+                to="/study"
+                className="btn btn-secondary"
+                style={{ fontSize: '0.8rem' }}
+                onClick={(e) => handleLeaveClick(e, '/study')}
+              >
+                Study Review
+              </Link>
+            )}
+          </nav>
         </div>
       </header>
       <main className="app-main">

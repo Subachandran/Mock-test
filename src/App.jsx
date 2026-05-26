@@ -6,6 +6,8 @@ import SectionPage from './pages/SectionPage';
 import QuizPage from './pages/QuizPage';
 import ResultsPage from './pages/ResultsPage';
 import ReviewPage from './pages/ReviewPage';
+import StudyHubPage from './pages/StudyHubPage';
+import StudyTopicPage from './pages/StudyTopicPage';
 
 const router = createBrowserRouter([
   {
@@ -13,6 +15,8 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Home /> },
+      { path: 'study', element: <StudyHubPage /> },
+      { path: 'study/topic/:topicSlug', element: <StudyTopicPage /> },
       { path: 'section/:sectionId', element: <SectionPage /> },
       { path: 'section/:sectionId/:roundId/quiz', element: <QuizPage /> },
       { path: 'section/:sectionId/:roundId/results', element: <ResultsPage /> },

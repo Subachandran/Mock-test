@@ -33,6 +33,18 @@ export default function Home() {
         <p>Pick a topic below to start your timed mock test.</p>
       </div>
 
+      <Link to="/study" className="study-promo-card">
+        <div className="study-promo-icon">📚</div>
+        <div className="study-promo-copy">
+          <h3>Study Review</h3>
+          <p>
+            Review questions, answers, and explanations by topic. Topics unlock when you complete a
+            section&apos;s rounds.
+          </p>
+        </div>
+        <span className="study-promo-arrow">→</span>
+      </Link>
+
       <div className="sections-grid">
         {sections.map((section) => {
           const progress = getSectionProgress(section.id, section.rounds);

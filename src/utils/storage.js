@@ -31,6 +31,15 @@ export function isAttemptComplete(attempt, expectedQuestionCount) {
   return storedTotal === expected;
 }
 
+/** All rounds in the section finished with a valid attempt for the current CSV size. */
+export function isSectionComplete(sectionId, rounds) {
+  if (!rounds?.length) return false;
+  return rounds.every((round) => {
+    const attempt = loadAttempt(sectionId, round.id);
+    return isAttemptComplete(attempt, round.questionCount ?? 0);
+  });
+}
+
 export function getSectionProgress(sectionId, rounds) {
   return rounds.map((round) => {
     const attempt = loadAttempt(sectionId, round.id);

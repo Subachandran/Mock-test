@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { hydrateSectionFromCsv } from '../utils/roundMeta';
+import { fetchSectionOrder, sortSectionsByOrder } from '../utils/sectionOrder';
 
 const SectionsContext = createContext(null);
 
@@ -11,8 +12,9 @@ async function loadManifest() {
 }
 
 async function loadHydratedSections() {
-  const rawSections = await loadManifest();
-  return Promise.all(rawSections.map(hydrateSectionFromCsv));
+  const [rawSections, order] = await Promise.all([loadManifest(), fetchSectionOrder()]);
+  const ordered = sortSectionsByOrder(rawSections, order);
+  return Promise.all(ordered.map(hydrateSectionFromCsv));
 }
 
 export function SectionsProvider({ children }) {

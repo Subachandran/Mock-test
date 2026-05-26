@@ -1,41 +1,6 @@
 {
-  "generatedAt": "2026-05-26T19:07:54.688Z",
+  "generatedAt": "2026-05-26T19:11:34.091Z",
   "sections": [
-    {
-      "id": "computer-network",
-      "title": "Computer Networks",
-      "description": "OSI/TCP-IP models, protocols, addressing, and networking fundamentals.",
-      "icon": "📡",
-      "color": "#7c3aed",
-      "rounds": [
-        {
-          "id": "round1",
-          "title": "Round 1",
-          "description": "Networking basics, protocols, and common ports",
-          "csvPath": "/data/computer-network/round1.csv",
-          "questionCount": 30,
-          "categories": [
-            {
-              "topic": "Computer Networks",
-              "count": 30
-            }
-          ]
-        },
-        {
-          "id": "round2",
-          "title": "Round 2",
-          "description": "OSI/TCP-IP layers, TCP, routing, and advanced concepts",
-          "csvPath": "/data/computer-network/round2.csv",
-          "questionCount": 30,
-          "categories": [
-            {
-              "topic": "Computer Networks",
-              "count": 30
-            }
-          ]
-        }
-      ]
-    },
     {
       "id": "dbms-angular-security",
       "title": "DBMS, Angular & Security",
@@ -168,6 +133,41 @@
             {
               "topic": "Web Basics",
               "count": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "computer-network",
+      "title": "Computer Networks",
+      "description": "OSI/TCP-IP models, protocols, addressing, and networking fundamentals.",
+      "icon": "📡",
+      "color": "#7c3aed",
+      "rounds": [
+        {
+          "id": "round1",
+          "title": "Round 1",
+          "description": "Networking basics, protocols, and common ports",
+          "csvPath": "/data/computer-network/round1.csv",
+          "questionCount": 30,
+          "categories": [
+            {
+              "topic": "Computer Networks",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "id": "round2",
+          "title": "Round 2",
+          "description": "OSI/TCP-IP layers, TCP, routing, and advanced concepts",
+          "csvPath": "/data/computer-network/round2.csv",
+          "questionCount": 30,
+          "categories": [
+            {
+              "topic": "Computer Networks",
+              "count": 30
             }
           ]
         }

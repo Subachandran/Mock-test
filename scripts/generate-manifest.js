@@ -7,6 +7,7 @@ import {
   hashTopic,
   styleFromAccent,
 } from './topicStylesShared.js';
+import { sortSectionsByOrder } from '../src/utils/sectionOrder.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = join(__dirname, '../public/data');
@@ -157,13 +158,50 @@ async function syncTopicsJson(sections) {
   );
 }
 
+async function syncSectionsJson(sectionIds) {
+  const sectionsPath = join(DATA_DIR, 'sections.json');
+  let order = [];
+
+  try {
+    const parsed = JSON.parse(await readFile(sectionsPath, 'utf-8'));
+    order = Array.isArray(parsed.order) ? parsed.order : [];
+  } catch {
+    /* first run — write defaults from discovered folders */
+  }
+
+  const discovered = new Set(sectionIds);
+  let orderChanged = false;
+
+  const filtered = order.filter((id) => {
+    if (discovered.has(id)) return true;
+    orderChanged = true;
+    return false;
+  });
+
+  const known = new Set(filtered);
+  const appended = [...sectionIds]
+    .filter((id) => !known.has(id))
+    .sort((a, b) => a.localeCompare(b));
+
+  if (appended.length > 0) orderChanged = true;
+  order = [...filtered, ...appended];
+
+  if (orderChanged || order.length === 0) {
+    await writeFile(sectionsPath, JSON.stringify({ order }, null, 2));
+    console.log(
+      `Synced sections.json (${order.length} section(s)${appended.length ? `, ${appended.length} new` : ''}) → ${sectionsPath}`
+    );
+  }
+
+  return order;
+}
+
 async function main() {
   const entries = await readdir(DATA_DIR, { withFileTypes: true });
   const sectionIds = entries
     .filter((e) => e.isDirectory())
     .map((e) => e.name)
-    .filter((name) => name !== 'node_modules')
-    .sort();
+    .filter((name) => name !== 'node_modules');
 
   const sections = [];
   for (const id of sectionIds) {
@@ -173,9 +211,12 @@ async function main() {
     }
   }
 
+  const order = await syncSectionsJson(sections.map((s) => s.id));
+  const orderedSections = sortSectionsByOrder(sections, order);
+
   const manifest = {
     generatedAt: new Date().toISOString(),
-    sections,
+    sections: orderedSections,
   };
 
   const outPath = join(DATA_DIR, 'manifest.json');

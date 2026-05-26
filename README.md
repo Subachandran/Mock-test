@@ -59,7 +59,22 @@ public/data/
 
 If `meta.json` is missing, the title is derived from the folder name.
 
-After adding a folder, run `npm run dev` or `npm run build` once so `manifest.json` lists the new section. **Question counts and categories are read live from each CSV** when you open the app (no rebuild needed after editing questions).
+After adding a folder, run `npm run dev` or `npm run build` once so `manifest.json` lists the new section. New section IDs are appended to `sections.json` automatically; reorder that file anytime without code changes.
+
+**Section order** lives in `public/data/sections.json`:
+
+```json
+{
+  "order": [
+    "dbms-angular-security",
+    "oop-software-engineering",
+    "rest-api-web-basics",
+    "computer-network"
+  ]
+}
+```
+
+Edit the `order` array to change how sections appear on the home page and study hub. **Question counts and categories are read live from each CSV** when you open the app (no rebuild needed after editing questions).
 
 If you change how many questions are in a CSV, refresh the page or revisit the section — completion badges only count attempts that match the current question count.
 

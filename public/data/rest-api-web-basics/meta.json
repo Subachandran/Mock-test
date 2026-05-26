@@ -1,6 +1,6 @@
 {
   "title": "REST API & Web Basics",
-  "description": "RESTful APIs, HTTP, and foundational web development concepts.",
+  "description": "RESTful APIs, HTTP, HTML/CSS, and JavaScript fundamentals.",
   "icon": "🌐",
   "color": "#0284c7",
   "roundTitles": {
@@ -8,7 +8,7 @@
     "round2": "Round 2"
   },
   "roundDescriptions": {
-    "round1": "REST API fundamentals and HTML/CSS/JS basics",
-    "round2": "Advanced REST, CORS, and web security & performance"
+    "round1": "REST API, web basics, and JavaScript fundamentals",
+    "round2": "Advanced REST, web concepts, and JavaScript scenarios"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-26T03:26:48.943Z",
+  "generatedAt": "2026-05-26T18:56:17.060Z",
   "sections": [
     {
       "id": "dbms-angular-security",
@@ -47,6 +47,49 @@
             {
               "topic": "Security",
               "count": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "oop-software-engineering",
+      "title": "OOP & Software Engineering",
+      "description": "Object-oriented programming concepts and software engineering fundamentals.",
+      "icon": "🧩",
+      "color": "#059669",
+      "rounds": [
+        {
+          "id": "round1",
+          "title": "Round 1",
+          "description": "OOP basics and software engineering foundations",
+          "csvPath": "/data/oop-software-engineering/round1.csv",
+          "questionCount": 30,
+          "categories": [
+            {
+              "topic": "OOP",
+              "count": 15
+            },
+            {
+              "topic": "Software Engineering",
+              "count": 15
+            }
+          ]
+        },
+        {
+          "id": "round2",
+          "title": "Round 2",
+          "description": "Advanced OOP principles and SDLC/testing scenarios",
+          "csvPath": "/data/oop-software-engineering/round2.csv",
+          "questionCount": 30,
+          "categories": [
+            {
+              "topic": "OOP",
+              "count": 15
+            },
+            {
+              "topic": "Software Engineering",
+              "count": 15
             }
           ]
         }

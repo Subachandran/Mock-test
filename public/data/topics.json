@@ -35,6 +35,18 @@
       "bg": "rgba(249, 168, 212, 0.18)",
       "border": "rgba(249, 168, 212, 0.45)",
       "accent": "#f472b6"
+    },
+    "OOP": {
+      "text": "#c4b5fd",
+      "bg": "rgba(167, 139, 250, 0.18)",
+      "border": "rgba(167, 139, 250, 0.45)",
+      "accent": "#a78bfa"
+    },
+    "Software Engineering": {
+      "text": "#67e8f9",
+      "bg": "rgba(34, 211, 238, 0.18)",
+      "border": "rgba(34, 211, 238, 0.45)",
+      "accent": "#22d3ee"
     }
   }
 }

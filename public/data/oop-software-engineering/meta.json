@@ -1,0 +1,14 @@
+{
+  "title": "OOP & Software Engineering",
+  "description": "Object-oriented programming concepts and software engineering fundamentals.",
+  "icon": "🧩",
+  "color": "#059669",
+  "roundTitles": {
+    "round1": "Round 1",
+    "round2": "Round 2"
+  },
+  "roundDescriptions": {
+    "round1": "OOP basics and software engineering foundations",
+    "round2": "Advanced OOP principles and SDLC/testing scenarios"
+  }
+}

@@ -113,6 +113,246 @@
       "bg": "rgba(129, 140, 248, 0.18)",
       "border": "rgba(129, 140, 248, 0.45)",
       "accent": "#818cf8"
+    },
+    "AVL Tree": {
+      "text": "#faa3a3",
+      "bg": "rgba(248, 113, 113, 0.18)",
+      "border": "rgba(248, 113, 113, 0.45)",
+      "accent": "#f87171"
+    },
+    "Accounts": {
+      "text": "#fcb880",
+      "bg": "rgba(251, 146, 60, 0.18)",
+      "border": "rgba(251, 146, 60, 0.45)",
+      "accent": "#fb923c"
+    },
+    "Algorithm Design": {
+      "text": "#faa3a3",
+      "bg": "rgba(248, 113, 113, 0.18)",
+      "border": "rgba(248, 113, 113, 0.45)",
+      "accent": "#f87171"
+    },
+    "Array": {
+      "text": "#faa3a3",
+      "bg": "rgba(248, 113, 113, 0.18)",
+      "border": "rgba(248, 113, 113, 0.45)",
+      "accent": "#f87171"
+    },
+    "BST": {
+      "text": "#7be2bd",
+      "bg": "rgba(52, 211, 153, 0.18)",
+      "border": "rgba(52, 211, 153, 0.45)",
+      "accent": "#34d399"
+    },
+    "Backtracking": {
+      "text": "#f8a3d0",
+      "bg": "rgba(244, 114, 182, 0.18)",
+      "border": "rgba(244, 114, 182, 0.45)",
+      "accent": "#f472b6"
+    },
+    "Banking Channels": {
+      "text": "#f8a3d0",
+      "bg": "rgba(244, 114, 182, 0.18)",
+      "border": "rgba(244, 114, 182, 0.45)",
+      "accent": "#f472b6"
+    },
+    "Banking Security": {
+      "text": "#fcd571",
+      "bg": "rgba(251, 191, 36, 0.18)",
+      "border": "rgba(251, 191, 36, 0.45)",
+      "accent": "#fbbf24"
+    },
+    "Banking Technology": {
+      "text": "#adb4fa",
+      "bg": "rgba(129, 140, 248, 0.18)",
+      "border": "rgba(129, 140, 248, 0.45)",
+      "accent": "#818cf8"
+    },
+    "Cards": {
+      "text": "#7be2bd",
+      "bg": "rgba(52, 211, 153, 0.18)",
+      "border": "rgba(52, 211, 153, 0.45)",
+      "accent": "#34d399"
+    },
+    "Cheque Processing": {
+      "text": "#fcb880",
+      "bg": "rgba(251, 146, 60, 0.18)",
+      "border": "rgba(251, 146, 60, 0.45)",
+      "accent": "#fb923c"
+    },
+    "Complexity": {
+      "text": "#f8a3d0",
+      "bg": "rgba(244, 114, 182, 0.18)",
+      "border": "rgba(244, 114, 182, 0.45)",
+      "accent": "#f472b6"
+    },
+    "Correctness": {
+      "text": "#6fe2f4",
+      "bg": "rgba(34, 211, 238, 0.18)",
+      "border": "rgba(34, 211, 238, 0.45)",
+      "accent": "#22d3ee"
+    },
+    "DSA - Basics": {
+      "text": "#f8a3d0",
+      "bg": "rgba(244, 114, 182, 0.18)",
+      "border": "rgba(244, 114, 182, 0.45)",
+      "accent": "#f472b6"
+    },
+    "Digital Banking": {
+      "text": "#fcb880",
+      "bg": "rgba(251, 146, 60, 0.18)",
+      "border": "rgba(251, 146, 60, 0.45)",
+      "accent": "#fb923c"
+    },
+    "Digital Payments": {
+      "text": "#faa3a3",
+      "bg": "rgba(248, 113, 113, 0.18)",
+      "border": "rgba(248, 113, 113, 0.45)",
+      "accent": "#f87171"
+    },
+    "Dynamic Programming": {
+      "text": "#adb4fa",
+      "bg": "rgba(129, 140, 248, 0.18)",
+      "border": "rgba(129, 140, 248, 0.45)",
+      "accent": "#818cf8"
+    },
+    "Graph": {
+      "text": "#adb4fa",
+      "bg": "rgba(129, 140, 248, 0.18)",
+      "border": "rgba(129, 140, 248, 0.45)",
+      "accent": "#818cf8"
+    },
+    "Greedy": {
+      "text": "#adb4fa",
+      "bg": "rgba(129, 140, 248, 0.18)",
+      "border": "rgba(129, 140, 248, 0.45)",
+      "accent": "#818cf8"
+    },
+    "Hashing": {
+      "text": "#98c5fc",
+      "bg": "rgba(96, 165, 250, 0.18)",
+      "border": "rgba(96, 165, 250, 0.45)",
+      "accent": "#60a5fa"
+    },
+    "Heap": {
+      "text": "#f8a3d0",
+      "bg": "rgba(244, 114, 182, 0.18)",
+      "border": "rgba(244, 114, 182, 0.45)",
+      "accent": "#f472b6"
+    },
+    "KYC / AML": {
+      "text": "#adb4fa",
+      "bg": "rgba(129, 140, 248, 0.18)",
+      "border": "rgba(129, 140, 248, 0.45)",
+      "accent": "#818cf8"
+    },
+    "Linked List": {
+      "text": "#89eaac",
+      "bg": "rgba(74, 222, 128, 0.18)",
+      "border": "rgba(74, 222, 128, 0.45)",
+      "accent": "#4ade80"
+    },
+    "Matrix": {
+      "text": "#c6b4fc",
+      "bg": "rgba(167, 139, 250, 0.18)",
+      "border": "rgba(167, 139, 250, 0.45)",
+      "accent": "#a78bfa"
+    },
+    "Open Banking": {
+      "text": "#fcb880",
+      "bg": "rgba(251, 146, 60, 0.18)",
+      "border": "rgba(251, 146, 60, 0.45)",
+      "accent": "#fb923c"
+    },
+    "Payments": {
+      "text": "#faa3a3",
+      "bg": "rgba(248, 113, 113, 0.18)",
+      "border": "rgba(248, 113, 113, 0.45)",
+      "accent": "#f87171"
+    },
+    "Queue": {
+      "text": "#c6b4fc",
+      "bg": "rgba(167, 139, 250, 0.18)",
+      "border": "rgba(167, 139, 250, 0.45)",
+      "accent": "#a78bfa"
+    },
+    "Recursion": {
+      "text": "#adb4fa",
+      "bg": "rgba(129, 140, 248, 0.18)",
+      "border": "rgba(129, 140, 248, 0.45)",
+      "accent": "#818cf8"
+    },
+    "Searching": {
+      "text": "#fcd571",
+      "bg": "rgba(251, 191, 36, 0.18)",
+      "border": "rgba(251, 191, 36, 0.45)",
+      "accent": "#fbbf24"
+    },
+    "Security in Banking": {
+      "text": "#7be2bd",
+      "bg": "rgba(52, 211, 153, 0.18)",
+      "border": "rgba(52, 211, 153, 0.45)",
+      "accent": "#34d399"
+    },
+    "Sliding Window": {
+      "text": "#fcb880",
+      "bg": "rgba(251, 146, 60, 0.18)",
+      "border": "rgba(251, 146, 60, 0.45)",
+      "accent": "#fb923c"
+    },
+    "Sorting": {
+      "text": "#fcb880",
+      "bg": "rgba(251, 146, 60, 0.18)",
+      "border": "rgba(251, 146, 60, 0.45)",
+      "accent": "#fb923c"
+    },
+    "Space Complexity": {
+      "text": "#fcb880",
+      "bg": "rgba(251, 146, 60, 0.18)",
+      "border": "rgba(251, 146, 60, 0.45)",
+      "accent": "#fb923c"
+    },
+    "Stack": {
+      "text": "#f8a3d0",
+      "bg": "rgba(244, 114, 182, 0.18)",
+      "border": "rgba(244, 114, 182, 0.45)",
+      "accent": "#f472b6"
+    },
+    "String": {
+      "text": "#6fe2f4",
+      "bg": "rgba(34, 211, 238, 0.18)",
+      "border": "rgba(34, 211, 238, 0.45)",
+      "accent": "#22d3ee"
+    },
+    "Time Complexity": {
+      "text": "#89eaac",
+      "bg": "rgba(74, 222, 128, 0.18)",
+      "border": "rgba(74, 222, 128, 0.45)",
+      "accent": "#4ade80"
+    },
+    "Tree": {
+      "text": "#98c5fc",
+      "bg": "rgba(96, 165, 250, 0.18)",
+      "border": "rgba(96, 165, 250, 0.45)",
+      "accent": "#60a5fa"
+    },
+    "Tree Traversal": {
+      "text": "#f8a3d0",
+      "bg": "rgba(244, 114, 182, 0.18)",
+      "border": "rgba(244, 114, 182, 0.45)",
+      "accent": "#f472b6"
+    },
+    "Two Pointer": {
+      "text": "#6fe2f4",
+      "bg": "rgba(34, 211, 238, 0.18)",
+      "border": "rgba(34, 211, 238, 0.45)",
+      "accent": "#22d3ee"
+    },
+    "UPI": {
+      "text": "#adb4fa",
+      "bg": "rgba(129, 140, 248, 0.18)",
+      "border": "rgba(129, 140, 248, 0.45)",
+      "accent": "#818cf8"
     }
   }
 }

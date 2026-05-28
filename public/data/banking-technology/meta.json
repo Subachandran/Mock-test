@@ -1,0 +1,14 @@
+{
+  "title": "Banking Technology",
+  "description": "Core banking, digital payments, UPI, cards, and banking security fundamentals.",
+  "icon": "🏦",
+  "color": "#b45309",
+  "roundTitles": {
+    "round1": "Round 1",
+    "round2": "Round 2"
+  },
+  "roundDescriptions": {
+    "round1": "CBS, RBI/NPCI, NEFT/RTGS/IMPS, UPI, and banking basics",
+    "round2": "Digital banking, payments, security, and applied banking scenarios"
+  }
+}

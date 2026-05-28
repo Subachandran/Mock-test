@@ -1,0 +1,61 @@
+id,topic,difficulty,question,option_a,option_b,option_c,option_d,correct_option,correct_answer,explanation
+1,DSA - Basics,Easy,What is a data structure?,A way to organize and store data,A programming language,A network device,A database user,A,A way to organize and store data,A data structure organizes data for efficient access and modification.
+2,DSA - Basics,Easy,What is an algorithm?,A step-by-step procedure to solve a problem,A hardware component,A CSS property,A bank transaction,A,A step-by-step procedure to solve a problem,An algorithm is a finite sequence of steps to solve a problem.
+3,DSA - Basics,Easy,Which property means an algorithm should eventually stop?,Finiteness,Randomness,Recursion,Hashing,A,Finiteness,Finiteness means the algorithm terminates after limited steps.
+4,DSA - Basics,Easy,Which property means an algorithm should give the same output for the same input?,Determinism,Volatility,Compression,Inheritance,A,Determinism,A deterministic algorithm behaves predictably for the same input.
+5,DSA - Basics,Easy,Which of the following is a linear data structure?,Array,Tree,Graph,Heap tree only,A,Array,Arrays store elements sequentially and are linear.
+6,Time Complexity,Easy,What does time complexity measure?,How running time grows with input size,How much disk space a file uses,How many users log in,How much network bandwidth is used,A,How running time grows with input size,Time complexity describes growth of execution time as input size increases.
+7,Space Complexity,Easy,What does space complexity measure?,Memory used by an algorithm,Screen width,Database row count only,Network latency,A,Memory used by an algorithm,Space complexity measures memory consumption relative to input size.
+8,Time Complexity,Easy,Which notation is mostly used for worst-case growth analysis?,Big O,JSON,HTML,CSS,A,Big O,Big O notation describes upper-bound growth.
+9,Time Complexity,Easy,Which complexity is constant time?,O(1),O(n),O(n log n),O(n^2),A,O(1),O(1) does not grow with input size.
+10,Time Complexity,Easy,A single loop from 1 to n usually has complexity:,O(n),O(1),O(log n),O(n^2),A,O(n),A single loop visiting n items is linear.
+11,Time Complexity,Easy,Two nested loops each running n times usually have complexity:,O(n^2),O(n),O(log n),O(1),A,O(n^2),Nested n-sized loops produce quadratic time.
+12,Time Complexity,Easy,A loop that halves n each time usually has complexity:,O(log n),O(n),O(n^2),O(2^n),A,O(log n),Repeated halving gives logarithmic growth.
+13,Array,Easy,An array stores elements in:,Contiguous memory locations,Separate linked nodes only,Only cloud storage,Only stack frames,A,Contiguous memory locations,"Arrays use contiguous memory, enabling index-based access."
+14,Array,Easy,Array element access using index usually takes:,O(1),O(n),O(log n),O(n^2),A,O(1),Direct index access is constant time.
+15,Array,Easy,Inserting at the beginning of an array usually takes:,O(n),O(1),O(log n),O(n log n),A,O(n),Existing elements may need to be shifted.
+16,Array,Easy,Deleting an element from the middle of an array usually requires:,Shifting remaining elements,Creating a tree,Hashing all values,Running BFS,A,Shifting remaining elements,"After deletion, later elements are shifted to fill the gap."
+17,Array,Easy,Which is a limitation of fixed-size arrays?,Size cannot grow dynamically,Index access is impossible,Elements cannot be stored,They cannot hold numbers,A,Size cannot grow dynamically,Fixed arrays have limited capacity decided earlier.
+18,Searching,Easy,Linear search works by:,Checking elements one by one,Dividing sorted range by two,Using only a stack,Building a heap,A,Checking elements one by one,Linear search scans items sequentially.
+19,Searching,Easy,Linear search worst-case complexity is:,O(n),O(1),O(log n),O(n log n),A,O(n),"In the worst case, all elements may be checked."
+20,Searching,Easy,Binary search requires data to be:,Sorted,Encrypted,Duplicated,Stored only in stack,A,Sorted,Binary search depends on sorted order.
+21,Searching,Easy,Binary search worst-case complexity is:,O(log n),O(n),O(n^2),O(2^n),A,O(log n),Each step halves the search range.
+22,Stack,Easy,Which data structure follows LIFO?,Stack,Queue,Graph,Hash table,A,Stack,Stack follows Last In First Out.
+23,Stack,Easy,LIFO stands for:,Last In First Out,Last Input Fast Output,Linear Index File Order,Low Input First Output,A,Last In First Out,The last inserted element is removed first.
+24,Stack,Easy,Which operation inserts an item into a stack?,Push,Pop,Dequeue,Poll,A,Push,Push adds an item to the top of the stack.
+25,Stack,Easy,Which operation removes the top item from a stack?,Pop,Push,Enqueue,Offer,A,Pop,Pop removes the top element.
+26,Stack,Easy,Which operation reads the top item without removing it?,Peek,Push,Dequeue,Sort,A,Peek,Peek returns the top item without deletion.
+27,Stack,Easy,Which application commonly uses stack behavior?,Undo operation,Printer queue,Level-order traversal,Round-robin queue only,A,Undo operation,Undo removes the most recent action first.
+28,Queue,Easy,Which data structure follows FIFO?,Queue,Stack,Heap,Tree,A,Queue,Queue follows First In First Out.
+29,Queue,Easy,FIFO stands for:,First In First Out,Fast Input Fast Output,Final In First Out,First Index Fixed Order,A,First In First Out,The first inserted element is removed first.
+30,Queue,Easy,Which operation inserts an item into a queue?,Enqueue,Pop,Peek stack,Rotate tree,A,Enqueue,Enqueue adds an item to the rear.
+31,Queue,Easy,Which operation removes an item from a queue?,Dequeue,Push,Hash,Sort,A,Dequeue,Dequeue removes from the front.
+32,Queue,Easy,A circular queue is useful because it:,Reuses freed spaces in a fixed-size queue,Sorts values automatically,Stores only strings,Prevents all overflow always,A,Reuses freed spaces in a fixed-size queue,Circular queues wrap around to reuse empty positions.
+33,Linked List,Easy,A linked list is made up of:,Nodes with data and links,Only contiguous array cells,Only database rows,Only binary digits,A,Nodes with data and links,Each node contains data and reference/link information.
+34,Linked List,Easy,A singly linked list node usually has:,Data and next pointer,Data and previous pointer only,Only root pointer,Only index value,A,Data and next pointer,A singly linked node points to the next node.
+35,Linked List,Easy,A doubly linked list node usually has:,"Data, previous pointer, and next pointer",Only data,Only next pointer,Only array index,A,"Data, previous pointer, and next pointer",Doubly linked nodes support forward and backward traversal.
+36,Linked List,Easy,Main advantage of linked list over array is:,Dynamic size,Constant random access,No extra memory for links,Automatic sorting,A,Dynamic size,Linked lists can grow or shrink dynamically.
+37,Linked List,Easy,Main disadvantage of linked list compared to array is:,No direct index access,Cannot insert data,Cannot delete data,Must be balanced,A,No direct index access,Linked lists require traversal to reach positions.
+38,Hashing,Easy,Hashing maps a key to:,An index or bucket,A tree root only,A queue position only,A CSS selector,A,An index or bucket,A hash function maps keys to table locations.
+39,Hashing,Easy,Average search time in a good hash table is:,O(1),O(n),O(log n),O(n^2),A,O(1),"With good distribution, lookup is constant on average."
+40,Hashing,Easy,A collision occurs when:,Two keys map to same bucket,Stack becomes empty,Tree becomes balanced,Queue is full,A,Two keys map to same bucket,Collision means multiple keys get the same hash location.
+41,Hashing,Easy,Chaining resolves collisions by:,Storing collided items in a list at the bucket,Deleting collided keys,Sorting the whole table,Using only recursion,A,Storing collided items in a list at the bucket,Chaining keeps multiple items under the same bucket.
+42,Hashing,Easy,A good hash function should:,Distribute keys uniformly,Always return same index,Use maximum collisions,Delete duplicate keys automatically,A,Distribute keys uniformly,Uniform distribution reduces collisions.
+43,Tree,Easy,A tree is a:,Hierarchical data structure,Linear-only structure,Network cable,Sorting method only,A,Hierarchical data structure,Tree data is organized in parent-child hierarchy.
+44,Tree,Easy,Topmost node of a tree is called:,Root,Leaf,Edge,Sibling,A,Root,The root is the starting node.
+45,Tree,Easy,A node with no child is called:,Leaf,Root always,Parent,Level,A,Leaf,Leaf nodes have no children.
+46,Tree,Easy,"In a binary tree, a node can have at most:",Two children,One child,Three children,Unlimited fixed children,A,Two children,Binary tree nodes have left and right child at most.
+47,BST,Easy,"In a Binary Search Tree, left subtree values are generally:",Less than root,Greater than root,Equal to root only,Random only,A,Less than root,BST keeps smaller values on the left side.
+48,BST,Easy,"In a Binary Search Tree, right subtree values are generally:",Greater than root,Less than root,Always zero,Always duplicate,A,Greater than root,BST keeps larger values on the right side.
+49,Tree Traversal,Easy,Inorder traversal order is:,"Left, Root, Right","Root, Left, Right","Left, Right, Root","Right, Root, Left",A,"Left, Root, Right","Inorder visits left subtree, root, then right subtree."
+50,Tree Traversal,Easy,Preorder traversal order is:,"Root, Left, Right","Left, Root, Right","Left, Right, Root","Right, Left, Root",A,"Root, Left, Right",Preorder visits the root first.
+51,Tree Traversal,Easy,Postorder traversal order is:,"Left, Right, Root","Root, Left, Right","Left, Root, Right","Root, Right, Left",A,"Left, Right, Root",Postorder visits root after children.
+52,Graph,Easy,A graph consists of:,Vertices and edges,Only arrays,Only stack frames,Only SQL rows,A,Vertices and edges,Graphs are made of nodes/vertices connected by edges.
+53,Graph,Easy,"In a directed graph, edges have:",Direction,No endpoints,Only weights,No vertices,A,Direction,Directed graph edges go from one vertex to another.
+54,Graph,Easy,BFS commonly uses:,Queue,Stack only,Heap only,Array index only,A,Queue,BFS uses a queue to visit level by level.
+55,Graph,Easy,DFS commonly uses:,Stack or recursion,Queue only,Heap only,Hash table only,A,Stack or recursion,DFS follows depth-first behavior using stack/recursion.
+56,Sorting,Easy,Bubble sort repeatedly:,Swaps adjacent wrong-order elements,Selects a random pivot only,Divides graph nodes,Uses hashing only,A,Swaps adjacent wrong-order elements,Bubble sort compares adjacent items and swaps if needed.
+57,Sorting,Easy,Selection sort repeatedly selects:,Minimum/maximum element,Middle element only,Random edge,Root node,A,Minimum/maximum element,Selection sort picks the smallest/largest remaining element.
+58,Sorting,Easy,Merge sort uses which technique?,Divide and conquer,Greedy only,Backtracking only,Linear probing,A,Divide and conquer,"Merge sort divides, sorts, and merges."
+59,Recursion,Easy,Recursion means:,A function calls itself,A queue removes itself,An array becomes sorted,A graph has no edge,A,A function calls itself,Recursive functions solve smaller versions of the same problem.
+60,Recursion,Easy,Base case in recursion is used to:,Stop recursion,Increase recursive calls forever,Create hash collision,Start a queue,A,Stop recursion,Base case prevents infinite recursive calls.

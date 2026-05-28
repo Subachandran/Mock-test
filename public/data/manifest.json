@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-28T02:16:32.977Z",
+  "generatedAt": "2026-05-28T03:02:06.647Z",
   "sections": [
     {
       "id": "dbms-angular-security",
@@ -280,6 +280,300 @@
             {
               "topic": "Reasoning",
               "count": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "banking-technology",
+      "title": "Banking Technology",
+      "description": "Core banking, digital payments, UPI, cards, and banking security fundamentals.",
+      "icon": "🏦",
+      "color": "#b45309",
+      "rounds": [
+        {
+          "id": "round1",
+          "title": "Round 1",
+          "description": "CBS, RBI/NPCI, NEFT/RTGS/IMPS, UPI, and banking basics",
+          "csvPath": "/data/banking-technology/round1.csv",
+          "questionCount": 60,
+          "categories": [
+            {
+              "topic": "Accounts",
+              "count": 3
+            },
+            {
+              "topic": "Banking Channels",
+              "count": 2
+            },
+            {
+              "topic": "Banking Security",
+              "count": 7
+            },
+            {
+              "topic": "Banking Technology",
+              "count": 17
+            },
+            {
+              "topic": "Cards",
+              "count": 4
+            },
+            {
+              "topic": "Digital Banking",
+              "count": 3
+            },
+            {
+              "topic": "Digital Payments",
+              "count": 12
+            },
+            {
+              "topic": "Open Banking",
+              "count": 1
+            },
+            {
+              "topic": "Payments",
+              "count": 4
+            },
+            {
+              "topic": "Security in Banking",
+              "count": 5
+            },
+            {
+              "topic": "UPI",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "id": "round2",
+          "title": "Round 2",
+          "description": "Digital banking, payments, security, and applied banking scenarios",
+          "csvPath": "/data/banking-technology/round2.csv",
+          "questionCount": 60,
+          "categories": [
+            {
+              "topic": "Banking Channels",
+              "count": 1
+            },
+            {
+              "topic": "Banking Technology",
+              "count": 13
+            },
+            {
+              "topic": "Cards",
+              "count": 6
+            },
+            {
+              "topic": "Cheque Processing",
+              "count": 1
+            },
+            {
+              "topic": "Digital Banking",
+              "count": 4
+            },
+            {
+              "topic": "Digital Payments",
+              "count": 13
+            },
+            {
+              "topic": "KYC / AML",
+              "count": 3
+            },
+            {
+              "topic": "Open Banking",
+              "count": 1
+            },
+            {
+              "topic": "Payments",
+              "count": 3
+            },
+            {
+              "topic": "Security in Banking",
+              "count": 12
+            },
+            {
+              "topic": "UPI",
+              "count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dsa",
+      "title": "Data Structures & Algorithms",
+      "description": "DSA fundamentals, complexity analysis, arrays, trees, graphs, sorting, and searching.",
+      "icon": "📊",
+      "color": "#7c3aed",
+      "rounds": [
+        {
+          "id": "round1",
+          "title": "Round 1",
+          "description": "DSA basics, time/space complexity, and foundational structures",
+          "csvPath": "/data/dsa/round1.csv",
+          "questionCount": 60,
+          "categories": [
+            {
+              "topic": "Array",
+              "count": 5
+            },
+            {
+              "topic": "BST",
+              "count": 2
+            },
+            {
+              "topic": "DSA - Basics",
+              "count": 5
+            },
+            {
+              "topic": "Graph",
+              "count": 4
+            },
+            {
+              "topic": "Hashing",
+              "count": 5
+            },
+            {
+              "topic": "Linked List",
+              "count": 5
+            },
+            {
+              "topic": "Queue",
+              "count": 5
+            },
+            {
+              "topic": "Recursion",
+              "count": 2
+            },
+            {
+              "topic": "Searching",
+              "count": 4
+            },
+            {
+              "topic": "Sorting",
+              "count": 3
+            },
+            {
+              "topic": "Space Complexity",
+              "count": 1
+            },
+            {
+              "topic": "Stack",
+              "count": 6
+            },
+            {
+              "topic": "Time Complexity",
+              "count": 6
+            },
+            {
+              "topic": "Tree",
+              "count": 4
+            },
+            {
+              "topic": "Tree Traversal",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "id": "round2",
+          "title": "Round 2",
+          "description": "Arrays, linked lists, trees, graphs, sorting, and searching scenarios",
+          "csvPath": "/data/dsa/round2.csv",
+          "questionCount": 60,
+          "categories": [
+            {
+              "topic": "Algorithm Design",
+              "count": 3
+            },
+            {
+              "topic": "Array",
+              "count": 3
+            },
+            {
+              "topic": "AVL Tree",
+              "count": 1
+            },
+            {
+              "topic": "Backtracking",
+              "count": 2
+            },
+            {
+              "topic": "BST",
+              "count": 3
+            },
+            {
+              "topic": "Complexity",
+              "count": 2
+            },
+            {
+              "topic": "Correctness",
+              "count": 1
+            },
+            {
+              "topic": "Dynamic Programming",
+              "count": 4
+            },
+            {
+              "topic": "Graph",
+              "count": 7
+            },
+            {
+              "topic": "Greedy",
+              "count": 2
+            },
+            {
+              "topic": "Hashing",
+              "count": 3
+            },
+            {
+              "topic": "Heap",
+              "count": 4
+            },
+            {
+              "topic": "Linked List",
+              "count": 3
+            },
+            {
+              "topic": "Matrix",
+              "count": 1
+            },
+            {
+              "topic": "Queue",
+              "count": 3
+            },
+            {
+              "topic": "Recursion",
+              "count": 2
+            },
+            {
+              "topic": "Searching",
+              "count": 2
+            },
+            {
+              "topic": "Sliding Window",
+              "count": 1
+            },
+            {
+              "topic": "Sorting",
+              "count": 6
+            },
+            {
+              "topic": "Stack",
+              "count": 3
+            },
+            {
+              "topic": "String",
+              "count": 2
+            },
+            {
+              "topic": "Tree",
+              "count": 1
+            },
+            {
+              "topic": "Two Pointer",
+              "count": 1
             }
           ]
         }

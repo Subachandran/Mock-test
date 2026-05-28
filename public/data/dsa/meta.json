@@ -1,0 +1,14 @@
+{
+  "title": "Data Structures & Algorithms",
+  "description": "DSA fundamentals, complexity analysis, arrays, trees, graphs, sorting, and searching.",
+  "icon": "📊",
+  "color": "#7c3aed",
+  "roundTitles": {
+    "round1": "Round 1",
+    "round2": "Round 2"
+  },
+  "roundDescriptions": {
+    "round1": "DSA basics, time/space complexity, and foundational structures",
+    "round2": "Arrays, linked lists, trees, graphs, sorting, and searching scenarios"
+  }
+}

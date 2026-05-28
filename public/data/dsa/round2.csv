@@ -1,0 +1,61 @@
+id,topic,difficulty,question,option_a,option_b,option_c,option_d,correct_option,correct_answer,explanation
+1,Array,Medium,"If an array has n elements, worst-case search in an unsorted array is:",O(n),O(1),O(log n),O(n log n),A,O(n),You may need to check every element.
+2,Array,Medium,Why is array index access fast?,Elements are stored contiguously,Elements are stored randomly,Each element has two pointers,Array is always sorted,A,Elements are stored contiguously,Address can be calculated directly from base address and index.
+3,Array,Medium,Which operation is costly in arrays compared to linked lists?,Insertion at beginning,Access by index,Reading length,Access first element,A,Insertion at beginning,Insertion at beginning needs shifting elements.
+4,Linked List,Medium,Insertion at the head of a linked list takes:,O(1),O(n),O(log n),O(n^2),A,O(1),Only head pointer and new node links are updated.
+5,Linked List,Medium,Searching in a linked list takes:,O(n),O(1),O(log n),O(n log n),A,O(n),Nodes must be traversed one by one.
+6,Linked List,Medium,Which linked list supports traversal in both directions?,Doubly linked list,Singly linked list,Circular queue,Stack only,A,Doubly linked list,Doubly linked list has previous and next links.
+7,Stack,Medium,Balanced parentheses checking is commonly done using:,Stack,Queue,Heap,Trie,A,Stack,Stack matches latest opening bracket with closing bracket.
+8,Stack,Medium,Postfix expression evaluation commonly uses:,Stack,Queue,Graph,BST,A,Stack,Operands are pushed and operators pop required operands.
+9,Stack,Medium,Function calls are managed internally using:,Call stack,Queue table,Hash map only,Priority queue only,A,Call stack,Each function call gets a stack frame.
+10,Queue,Medium,Round robin scheduling commonly uses:,Queue,Stack,Trie,BST,A,Queue,Processes rotate in queue order.
+11,Queue,Medium,A deque supports insertion/deletion at:,Both ends,Only front,Only rear,Only middle,A,Both ends,Deque means double-ended queue.
+12,Queue,Medium,A priority queue removes elements based on:,Priority,Only insertion order,Only alphabetical order,Only random order,A,Priority,Priority queue serves highest/lowest priority first.
+13,Hashing,Medium,Open addressing resolves collisions by:,Finding another slot in the same table,Creating a linked list outside table only,Sorting the table,Using DFS,A,Finding another slot in the same table,Open addressing probes for empty slots.
+14,Hashing,Medium,Linear probing may suffer from:,Primary clustering,Tree rotation,Queue overflow only,Stack underflow only,A,Primary clustering,Consecutive occupied slots form clusters.
+15,Hashing,Medium,Increasing hash table load factor usually:,Increases collision chances,Decreases all collisions always,Makes lookup O(log n) always,Turns table into tree,A,Increases collision chances,A fuller table creates more collision probability.
+16,BST,Medium,Inorder traversal of BST gives:,Sorted order,Random order,Level order,Insertion order always,A,Sorted order,BST inorder traversal returns ascending values.
+17,BST,Medium,Worst-case height of an unbalanced BST with n nodes can be:,n,log n always,1 always,0 always,A,n,A skewed BST behaves like a linked list.
+18,BST,Medium,Search in a balanced BST is usually:,O(log n),O(n^2),O(1) always,O(n log n),A,O(log n),Balanced height is logarithmic.
+19,AVL Tree,Medium,AVL tree maintains balance using:,Rotations,Hashing,Queue shifting,Linear probing,A,Rotations,AVL uses rotations after insert/delete to maintain height balance.
+20,Heap,Medium,"In a max heap, root contains:",Maximum element,Minimum element,Median always,Newest element always,A,Maximum element,Max heap places largest key at root.
+21,Heap,Medium,Heap insertion usually takes:,O(log n),O(n),O(1) always,O(n^2),A,O(log n),Element may move up along heap height.
+22,Heap,Medium,Heap is commonly used to implement:,Priority queue,Binary search only,DFS only,Linked list only,A,Priority queue,Heap efficiently returns highest/lowest priority item.
+23,Graph,Medium,BFS finds shortest path in:,Unweighted graph,Weighted graph with negative edges always,Hash table,Stack only,A,Unweighted graph,BFS gives minimum edge count path in unweighted graphs.
+24,Graph,Medium,Dijkstra algorithm works correctly with:,Non-negative edge weights,Only negative weights,No edges,Unsorted arrays only,A,Non-negative edge weights,Dijkstra assumes non-negative weights.
+25,Graph,Medium,Topological sorting applies to:,Directed Acyclic Graph,Undirected cyclic graph,Hash table,Stack only,A,Directed Acyclic Graph,Topological order exists only for DAGs.
+26,Graph,Medium,A graph cycle means:,Path starts and ends at same vertex,All nodes are isolated,No edge exists,Only one node exists,A,Path starts and ends at same vertex,Cycle returns to the starting vertex.
+27,Graph,Medium,Adjacency matrix space complexity is:,O(V^2),O(V+E),O(log V),O(1),A,O(V^2),It stores relation for every vertex pair.
+28,Graph,Medium,Adjacency list is more space efficient for:,Sparse graphs,Very dense complete graphs only,Single integer arrays,Stacks only,A,Sparse graphs,Sparse graphs have fewer edges than maximum possible.
+29,Graph,Medium,Level order traversal of a tree uses:,Queue,Stack only,Heap only,Trie only,A,Queue,Level order is BFS over tree nodes.
+30,Sorting,Medium,Which sorting algorithm is stable in common implementation?,Merge sort,Heap sort always,Selection sort always,Quick sort always,A,Merge sort,Merge sort can preserve order of equal items.
+31,Sorting,Medium,Stable sorting preserves:,Relative order of equal elements,Only descending order,Memory address order,Pivot position,A,Relative order of equal elements,Equal elements remain in their original relative order.
+32,Sorting,Medium,Quicksort average time complexity is:,O(n log n),O(n^2) always,O(n),O(log n),A,O(n log n),Good pivot choices give average n log n.
+33,Sorting,Medium,Quicksort worst-case time complexity can be:,O(n^2),O(log n),O(1),O(n) always,A,O(n^2),Bad pivot choices can create highly unbalanced partitions.
+34,Sorting,Medium,Counting sort is useful when:,Range of input values is limited,Values are all strings only,Graph is weighted,Array is encrypted,A,Range of input values is limited,Counting sort counts occurrences within a known range.
+35,Sorting,Medium,Which sorting algorithm is divide and conquer?,Merge sort,Bubble sort,Selection sort,Linear search,A,Merge sort,Merge sort divides the problem into halves.
+36,Searching,Medium,Safe mid calculation in binary search is:,low + (high - low) / 2,(low + high) * 2,high - low,low * high,A,low + (high - low) / 2,This avoids overflow in languages with fixed integer size.
+37,Searching,Medium,Binary search fails if:,Data is not sorted,Data has numbers,Data is in array,Data has length,A,Data is not sorted,Binary search relies on sorted order.
+38,Recursion,Medium,Missing base case in recursion can cause:,Stack overflow,Faster execution,Automatic memoization,Sorting,A,Stack overflow,Recursive calls may continue indefinitely.
+39,Recursion,Medium,Tail recursion means recursive call is:,The last operation in the function,Always first operation,Never used,Only inside loop,A,The last operation in the function,Tail recursion has no pending work after recursive call.
+40,Dynamic Programming,Medium,Dynamic programming is useful when problems have:,Overlapping subproblems,Only independent subproblems,No repeated calculations,No optimal substructure,A,Overlapping subproblems,DP stores repeated subproblem results.
+41,Dynamic Programming,Medium,Memoization is usually:,Top-down caching,Bottom-up table only,Random selection,Hash collision method,A,Top-down caching,Memoization caches recursive results.
+42,Dynamic Programming,Medium,Tabulation is usually:,Bottom-up dynamic programming,Top-down recursion only,Graph traversal only,Stack operation,A,Bottom-up dynamic programming,Tabulation fills smaller results first.
+43,Dynamic Programming,Medium,Naive recursive Fibonacci is inefficient due to:,Repeated subproblem computation,No addition operation,No base case possible,Sorted array requirement,A,Repeated subproblem computation,The same Fibonacci values are recomputed many times.
+44,Greedy,Medium,Greedy algorithm chooses:,Locally best option at each step,All possible options always,Only recursive option,Only random option,A,Locally best option at each step,Greedy makes best immediate choice.
+45,Greedy,Medium,Greedy may fail when:,Local optimum does not produce global optimum,Input has numbers,Output is small,Array is sorted,A,Local optimum does not produce global optimum,Greedy is correct only for problems with greedy-choice property.
+46,Backtracking,Medium,Backtracking works by:,Trying choices and undoing invalid choices,Only sorting arrays,Only hashing keys,Only dividing by two,A,Trying choices and undoing invalid choices,Backtracking explores possibilities and retreats when constraints fail.
+47,Backtracking,Medium,N-Queens is commonly solved using:,Backtracking,Bubble sort,Binary search,Linear probing,A,Backtracking,N-Queens tries positions and backtracks on conflicts.
+48,String,Medium,A palindrome reads:,Same forward and backward,Only left to right,Only numbers,Only uppercase,A,Same forward and backward,Examples include level and madam.
+49,String,Medium,Trie is useful for:,Prefix search,Heap sorting,Stack overflow,Matrix multiplication only,A,Prefix search,Trie stores characters in prefix tree form.
+50,Two Pointer,Medium,Two-pointer technique is useful for:,Pair/search problems in sorted arrays,Only tree rotation,Only queue overflow,Only hashing PINs,A,Pair/search problems in sorted arrays,Two pointers can scan efficiently from both ends or same direction.
+51,Sliding Window,Medium,Sliding window is useful for:,Subarray or substring range problems,Only tree height,Only graph cycle detection,Only stack peek,A,Subarray or substring range problems,It maintains a moving range to avoid recomputation.
+52,Matrix,Medium,A 2D array is commonly used to represent:,Matrix or grid,Stack only,Hash only,Single pointer,A,Matrix or grid,2D arrays store row-column data.
+53,Algorithm Design,Medium,Brute force means:,Trying all possible solutions directly,Always using greedy,Only using hash table,Never checking input,A,Trying all possible solutions directly,Brute force solves by exhaustive search.
+54,Algorithm Design,Medium,Divide and conquer has which steps?,"Divide, solve, combine","Hash, push, pop","Encrypt, decrypt, send","Open, close, delete",A,"Divide, solve, combine","Problems are divided into subproblems, solved, then combined."
+55,Complexity,Medium,Which grows fastest among these?,O(2^n),O(n log n),O(n),O(log n),A,O(2^n),Exponential growth is faster than polynomial/logarithmic for large n.
+56,Complexity,Medium,Which grows slowest among these for large n?,O(log n),O(n),O(n log n),O(n^2),A,O(log n),Logarithmic growth is slower than linear and quadratic.
+57,Tree,Medium,A complete binary tree is filled:,Level by level from left to right,Only right to left,Only with equal values,Randomly always,A,Level by level from left to right,"Complete trees fill all levels except possibly the last, left to right."
+58,Heap,Medium,A binary heap is usually implemented using:,Array,Graph adjacency matrix only,Doubly linked list only,Hash table only,A,Array,Heap parent-child relationships map efficiently to array indexes.
+59,Correctness,Medium,Which method helps compare algorithms independent of machine speed?,Asymptotic analysis,UI testing,Password hashing,Network routing,A,Asymptotic analysis,Asymptotic analysis compares growth rates rather than hardware-specific timing.
+60,Algorithm Design,Medium,Which technique avoids recalculating results by storing previous answers?,Caching / memoization,Bubble swapping,Queue rotation,Tree deletion,A,Caching / memoization,Memoization stores previous results so repeated subproblems are not recomputed.

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-26T19:39:22.017Z",
+  "generatedAt": "2026-05-28T02:16:32.977Z",
   "sections": [
     {
       "id": "dbms-angular-security",
@@ -208,6 +208,78 @@
             {
               "topic": "Operating System",
               "count": 30
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "non-technical-skills",
+      "title": "Non-Technical Skills",
+      "description": "Reasoning, English, and quantitative aptitude for placement preparation.",
+      "icon": "📝",
+      "color": "#be123c",
+      "rounds": [
+        {
+          "id": "round1",
+          "title": "Round 1",
+          "description": "Easy — reasoning, English, and quantitative aptitude",
+          "csvPath": "/data/non-technical-skills/round1.csv",
+          "questionCount": 60,
+          "categories": [
+            {
+              "topic": "English",
+              "count": 20
+            },
+            {
+              "topic": "Quantitative Aptitude",
+              "count": 20
+            },
+            {
+              "topic": "Reasoning",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "id": "round2",
+          "title": "Round 2",
+          "description": "Medium — reasoning, English, and quantitative aptitude",
+          "csvPath": "/data/non-technical-skills/round2.csv",
+          "questionCount": 60,
+          "categories": [
+            {
+              "topic": "English",
+              "count": 20
+            },
+            {
+              "topic": "Quantitative Aptitude",
+              "count": 20
+            },
+            {
+              "topic": "Reasoning",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "id": "round3",
+          "title": "Round 3",
+          "description": "Hard — reasoning, English, and quantitative aptitude",
+          "csvPath": "/data/non-technical-skills/round3.csv",
+          "questionCount": 60,
+          "categories": [
+            {
+              "topic": "English",
+              "count": 20
+            },
+            {
+              "topic": "Quantitative Aptitude",
+              "count": 20
+            },
+            {
+              "topic": "Reasoning",
+              "count": 20
             }
           ]
         }

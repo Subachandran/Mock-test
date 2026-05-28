@@ -95,6 +95,24 @@
       "bg": "rgba(167, 139, 250, 0.18)",
       "border": "rgba(167, 139, 250, 0.45)",
       "accent": "#a78bfa"
+    },
+    "English": {
+      "text": "#f0abfc",
+      "bg": "rgba(232, 121, 249, 0.18)",
+      "border": "rgba(232, 121, 249, 0.45)",
+      "accent": "#e879f9"
+    },
+    "Quantitative Aptitude": {
+      "text": "#7dd3fc",
+      "bg": "rgba(14, 165, 233, 0.18)",
+      "border": "rgba(14, 165, 233, 0.45)",
+      "accent": "#0ea5e9"
+    },
+    "Reasoning": {
+      "text": "#adb4fa",
+      "bg": "rgba(129, 140, 248, 0.18)",
+      "border": "rgba(129, 140, 248, 0.45)",
+      "accent": "#818cf8"
     }
   }
 }

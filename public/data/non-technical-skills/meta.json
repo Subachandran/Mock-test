@@ -1,0 +1,16 @@
+{
+  "title": "Non-Technical Skills",
+  "description": "Reasoning, English, and quantitative aptitude for placement preparation.",
+  "icon": "📝",
+  "color": "#be123c",
+  "roundTitles": {
+    "round1": "Round 1",
+    "round2": "Round 2",
+    "round3": "Round 3"
+  },
+  "roundDescriptions": {
+    "round1": "Easy — reasoning, English, and quantitative aptitude",
+    "round2": "Medium — reasoning, English, and quantitative aptitude",
+    "round3": "Hard — reasoning, English, and quantitative aptitude"
+  }
+}

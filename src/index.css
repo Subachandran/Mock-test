@@ -1216,7 +1216,199 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   margin-bottom: 0.3rem;
 }
 
-/* ── Study review (global, outside sections) ───────────── */
+/* ── Home featured promos ───────────────────────────────── */
+.home-featured {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.home-promo {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem 1.35rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.home-promo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--transition);
+  pointer-events: none;
+}
+
+.home-promo--exam {
+  border-color: rgba(245, 158, 11, 0.35);
+}
+.home-promo--exam::before {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.14) 0%, transparent 55%);
+  opacity: 1;
+}
+.home-promo--exam:hover {
+  border-color: rgba(251, 191, 36, 0.55);
+  box-shadow: 0 8px 28px rgba(245, 158, 11, 0.12);
+}
+
+.home-promo--study {
+  border-color: rgba(99, 102, 241, 0.35);
+}
+.home-promo--study::before {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.14) 0%, transparent 55%);
+  opacity: 1;
+}
+.home-promo--study:hover {
+  border-color: rgba(129, 140, 248, 0.55);
+  box-shadow: 0 8px 28px rgba(99, 102, 241, 0.12);
+}
+
+.home-promo:hover {
+  transform: translateY(-2px);
+}
+
+.home-promo-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.home-promo--exam .home-promo-icon-wrap {
+  background: rgba(245, 158, 11, 0.15);
+}
+
+.home-promo--study .home-promo-icon-wrap {
+  background: rgba(99, 102, 241, 0.18);
+}
+
+.home-promo-body {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.home-promo-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.home-promo-head h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.home-promo-pill {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  background: var(--surface-2);
+}
+
+.home-promo--exam .home-promo-pill {
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.35);
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.home-promo--study .home-promo-pill {
+  color: var(--accent-hover);
+  border-color: rgba(99, 102, 241, 0.35);
+  background: rgba(99, 102, 241, 0.12);
+}
+
+.home-promo-desc {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 0.65rem;
+}
+
+.home-promo-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.home-promo-stats span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.home-promo--exam .home-promo-stats span {
+  border-color: rgba(245, 158, 11, 0.2);
+  color: #fcd34d;
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.home-promo-cta {
+  align-self: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-faint);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  transition: color var(--transition), transform var(--transition);
+}
+
+.home-promo:hover .home-promo-cta {
+  transform: translateX(3px);
+}
+
+.home-promo--exam:hover .home-promo-cta { color: #fbbf24; }
+.home-promo--study:hover .home-promo-cta { color: var(--accent-hover); }
+
+.home-sections-heading {
+  margin-bottom: 1.15rem;
+}
+
+.home-sections-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.home-sections-sub {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+/* Legacy study promo (study hub etc.) */
 .study-promo-card {
   display: flex;
   align-items: center;
@@ -1235,7 +1427,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .study-promo-icon { font-size: 1.75rem; flex-shrink: 0; line-height: 1; }
 .study-promo-copy { flex: 1; min-width: 0; }
-.study-promo-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+.study-promo-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; color: var(--text); }
 .study-promo-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.45; }
 .study-promo-arrow {
   color: var(--accent-hover);
@@ -1630,6 +1822,183 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @keyframes spin { to { transform: rotate(360deg); } }
 .error-state { color: var(--error); }
 
+/* ── Full mock tests ─────────────────────────────────────── */
+.full-mock-exam-summary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.35rem;
+  margin-bottom: 1.75rem;
+}
+.full-mock-exam-summary--highlight {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.06) 0%, var(--surface) 45%);
+}
+.full-mock-exam-summary-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.85rem;
+}
+.full-mock-pattern-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  margin-bottom: 0.85rem;
+}
+.full-mock-pattern-table th,
+.full-mock-pattern-table td {
+  padding: 0.45rem 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.full-mock-pattern-table th {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.full-mock-pattern-total td {
+  border-bottom: none;
+  padding-top: 0.55rem;
+}
+.full-mock-rules-compact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.full-mock-progress-line {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+.full-mock-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.full-mock-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.full-mock-card-available {
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.full-mock-card-available:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.12);
+}
+.full-mock-card-locked {
+  opacity: 0.72;
+}
+.full-mock-card-body h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+.full-mock-card-meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.full-mock-card-score {
+  font-size: 0.82rem;
+  margin-top: 0.35rem;
+  color: var(--success);
+}
+.full-mock-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+}
+.full-mock-section-chip {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(251, 191, 36, 0.3);
+  color: #fcd34d;
+}
+.full-mock-section-badge {
+  background: rgba(245, 158, 11, 0.12) !important;
+  color: #fcd34d !important;
+  border: 1px solid rgba(251, 191, 36, 0.3) !important;
+}
+.full-mock-results-card .full-mock-score-hero {
+  text-align: center;
+  margin: 1.25rem 0 1rem;
+}
+.full-mock-score-hero--share {
+  margin: 0.5rem 0 0.25rem;
+}
+.full-mock-score-hero--share .full-mock-score-value {
+  font-size: 2rem;
+}
+.full-mock-score-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+.full-mock-score-value {
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+  line-height: 1;
+}
+.full-mock-score-of {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+.full-mock-score-pct {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+.full-mock-section-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.full-mock-section-score-row {
+  padding: 0.65rem 0.75rem;
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.full-mock-section-score-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  margin-bottom: 0.25rem;
+}
+.full-mock-section-score-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.full-mock-marks-chip {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
 /* ── Mobile ─────────────────────────────────────────────── */
 @media (max-width: 640px) {
   .app-main { padding: 1.5rem 1rem; }
@@ -1640,6 +2009,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .round-card { flex-direction: column; }
   .round-actions { width: 100%; justify-content: flex-end; }
   .quiz-header { flex-wrap: wrap; }
+  .home-featured {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  .home-promo {
+    padding: 1rem 1.1rem;
+  }
+  .home-promo-cta {
+    display: none;
+  }
   .study-promo-card {
     align-items: center;
     justify-content: flex-start;

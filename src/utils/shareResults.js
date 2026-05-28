@@ -62,3 +62,9 @@ export function buildResultsFilename(sectionId, roundId, pct) {
   const safeRound = (roundId || 'round').replace(/[^a-z0-9-]/gi, '-');
   return `mock-test-${safeSection}-${safeRound}-${pct}pct-${date}.png`;
 }
+
+export function buildFullMockResultsFilename(mockId, displayPct) {
+  const date = new Date().toISOString().slice(0, 10);
+  const safeMock = (mockId || 'full-mock').replace(/[^a-z0-9-]/gi, '-');
+  return `mock-test-full-${safeMock}-${displayPct}pct-${date}.png`;
+}

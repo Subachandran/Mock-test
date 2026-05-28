@@ -6,6 +6,7 @@ export default function Layout() {
   const navigate = useNavigate();
   const isHome = location.pathname === '/';
   const isStudy = location.pathname.startsWith('/study');
+  const isFullMocks = location.pathname.startsWith('/full-mocks');
 
   const handleLeaveClick = (e, destination) => {
     if (!isQuizActive()) return;
@@ -43,6 +44,16 @@ export default function Layout() {
                 onClick={(e) => handleLeaveClick(e, '/')}
               >
                 ← Sections
+              </Link>
+            )}
+            {!isFullMocks && (
+              <Link
+                to="/full-mocks"
+                className="btn btn-secondary"
+                style={{ fontSize: '0.8rem' }}
+                onClick={(e) => handleLeaveClick(e, '/full-mocks')}
+              >
+                Full Mocks
               </Link>
             )}
             {!isStudy && (

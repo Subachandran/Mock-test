@@ -54,3 +54,47 @@ export function getSectionProgress(sectionId, rounds) {
     };
   });
 }
+
+// —— Full mock tests ——
+
+function fullMockKey(mockId) {
+  return `${STORAGE_PREFIX}fullmock_${mockId}`;
+}
+
+export function saveFullMockAttempt(mockId, attempt) {
+  localStorage.setItem(fullMockKey(mockId), JSON.stringify(attempt));
+}
+
+export function loadFullMockAttempt(mockId) {
+  const raw = localStorage.getItem(fullMockKey(mockId));
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+export function clearFullMockAttempt(mockId) {
+  localStorage.removeItem(fullMockKey(mockId));
+}
+
+export function isFullMockAttemptComplete(attempt, expectedQuestionCount) {
+  return isAttemptComplete(attempt, expectedQuestionCount);
+}
+
+export function getFullMockProgress(mocks) {
+  return mocks.map((mock) => {
+    const attempt = loadFullMockAttempt(mock.id);
+    const expected = mock.questionCount ?? 0;
+    const completed = isFullMockAttemptComplete(attempt, expected);
+
+    return {
+      mockId: mock.id,
+      completed,
+      score: completed ? attempt.score : null,
+      maxScore: completed ? attempt.maxScore : null,
+      earned: completed ? attempt.earned : null,
+    };
+  });
+}

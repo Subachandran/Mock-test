@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import StudyLockMark from '../components/StudyLockMark';
 import StudyTopicLabel from '../components/StudyTopicLabel';
 import { useSections } from '../context/SectionsContext';
+import { useFullMocks } from '../context/FullMocksContext';
 import {
   buildTopicCatalog,
   getLockedSectionsForTopic,
@@ -10,15 +11,16 @@ import {
   topicToSlug,
 } from '../utils/studyReview';
 import { useTopicStyle } from '../utils/topics';
-import { getSectionProgress } from '../utils/storage';
+import { getSectionProgress, loadFullMockAttempt, isFullMockAttemptComplete } from '../utils/storage';
 
 export default function StudyHubPage() {
   const { sections, loading, error } = useSections();
+  const { mocks: fullMocks, loading: mocksLoading } = useFullMocks();
   const getTopicStyle = useTopicStyle();
 
   const topicCatalog = useMemo(
-    () => (sections.length ? buildTopicCatalog(sections) : []),
-    [sections]
+    () => (sections.length || fullMocks.length ? buildTopicCatalog(sections, fullMocks) : []),
+    [sections, fullMocks]
   );
 
   const sortedTopics = useMemo(
@@ -34,7 +36,7 @@ export default function StudyHubPage() {
 
   const unlockedTopicCount = topicCatalog.filter((t) => t.unlockedCount > 0).length;
 
-  if (loading) {
+  if (loading || mocksLoading) {
     return (
       <div className="loading-state">
         <div className="loading-spinner" />
@@ -64,8 +66,8 @@ export default function StudyHubPage() {
       <div className="page-header">
         <h2>Study Review</h2>
         <p>
-          Browse questions and explanations by topic. Complete a section&apos;s rounds to unlock its
-          topics here. New sections appear automatically — locked until you finish them.
+          Browse questions and explanations by topic. Complete section rounds or a full mock to unlock
+          topics here.
         </p>
       </div>
 
@@ -158,6 +160,40 @@ export default function StudyHubPage() {
             })}
           </div>
         )}
+      </section>
+
+      <section className="study-block study-block-secondary">
+        <h3 className="study-block-title">Full mock tests</h3>
+        <p className="study-block-desc">
+          Complete a full mock to add its questions to Study Review by topic.
+        </p>
+        <div className="full-mock-list" style={{ marginBottom: '1.5rem' }}>
+          {fullMocks.map((mock) => {
+            const attempt = loadFullMockAttempt(mock.id);
+            const complete =
+              mock.available &&
+              isFullMockAttemptComplete(attempt, mock.questionCount ?? 0);
+            return (
+              <Link
+                key={mock.id}
+                to={mock.available ? `/full-mocks/${mock.id}` : '/full-mocks'}
+                className={`full-mock-card ${mock.available ? 'full-mock-card-available' : 'full-mock-card-locked'}`}
+              >
+                <div className="full-mock-card-body">
+                  <h3>{mock.title}</h3>
+                  <p className="full-mock-card-meta">
+                    {mock.available
+                      ? `${mock.questionCount} questions`
+                      : 'Coming soon'}
+                  </p>
+                </div>
+                <span className={`badge ${complete ? 'badge-success' : ''}`}>
+                  {complete ? '✓ Unlocks study' : mock.available ? 'Take mock' : 'Locked'}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
       </section>
 
       <section className="study-block study-block-secondary">

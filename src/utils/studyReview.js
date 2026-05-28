@@ -1,5 +1,5 @@
 import { loadQuestionsFromCsv } from './csvParser';
-import { isSectionComplete } from './storage';
+import { isSectionComplete, isFullMockAttemptComplete, loadFullMockAttempt } from './storage';
 
 export function topicToSlug(topic) {
   return encodeURIComponent(topic || 'General');
@@ -29,11 +29,36 @@ export function getSectionTopicBreakdown(section) {
     .sort((a, b) => a.topic.localeCompare(b.topic));
 }
 
+function addTopicToCatalog(catalog, { topic, count, unlocked, source }) {
+  if (!catalog.has(topic)) {
+    catalog.set(topic, {
+      topic,
+      totalCount: 0,
+      unlockedCount: 0,
+      lockedCount: 0,
+      sections: [],
+      fullMocks: [],
+    });
+  }
+  const entry = catalog.get(topic);
+  entry.totalCount += count;
+  if (unlocked) {
+    entry.unlockedCount += count;
+  } else {
+    entry.lockedCount += count;
+  }
+  if (source.type === 'section') {
+    entry.sections.push(source.payload);
+  } else {
+    entry.fullMocks.push(source.payload);
+  }
+}
+
 /**
- * Build a dynamic topic catalog across all sections.
- * Topics appear as soon as they exist in CSV metadata; unlock when that section is complete.
+ * Build a dynamic topic catalog across sections and full mocks.
+ * Topics unlock when their section rounds or full mock is complete.
  */
-export function buildTopicCatalog(sections) {
+export function buildTopicCatalog(sections, fullMocks = []) {
   const catalog = new Map();
 
   sections.forEach((section) => {
@@ -41,29 +66,43 @@ export function buildTopicCatalog(sections) {
     const topics = getSectionTopicBreakdown(section);
 
     topics.forEach(({ topic, count }) => {
-      if (!catalog.has(topic)) {
-        catalog.set(topic, {
-          topic,
-          totalCount: 0,
-          unlockedCount: 0,
-          lockedCount: 0,
-          sections: [],
-        });
-      }
-      const entry = catalog.get(topic);
-      entry.totalCount += count;
-      if (unlocked) {
-        entry.unlockedCount += count;
-      } else {
-        entry.lockedCount += count;
-      }
-      entry.sections.push({
-        sectionId: section.id,
-        title: section.title,
-        icon: section.icon,
-        color: section.color,
-        unlocked,
+      addTopicToCatalog(catalog, {
+        topic,
         count,
+        unlocked,
+        source: {
+          type: 'section',
+          payload: {
+            sectionId: section.id,
+            title: section.title,
+            icon: section.icon,
+            color: section.color,
+            unlocked,
+            count,
+          },
+        },
+      });
+    });
+  });
+
+  fullMocks.forEach((mock) => {
+    if (!mock.available) return;
+    const attempt = loadFullMockAttempt(mock.id);
+    const unlocked = isFullMockAttemptComplete(attempt, mock.questionCount ?? 0);
+    (mock.categories || []).forEach(({ topic, count }) => {
+      addTopicToCatalog(catalog, {
+        topic,
+        count,
+        unlocked,
+        source: {
+          type: 'fullMock',
+          payload: {
+            mockId: mock.id,
+            title: mock.title,
+            unlocked,
+            count,
+          },
+        },
       });
     });
   });
@@ -75,6 +114,12 @@ export function buildTopicCatalog(sections) {
 export function getLockedSectionsForTopic(catalogEntry) {
   if (!catalogEntry?.sections) return [];
   return catalogEntry.sections.filter((s) => !s.unlocked);
+}
+
+/** Full mocks that still need to be completed to unlock more questions for a topic. */
+export function getLockedFullMocksForTopic(catalogEntry) {
+  if (!catalogEntry?.fullMocks) return [];
+  return catalogEntry.fullMocks.filter((m) => !m.unlocked);
 }
 
 export function getSectionUnlockState(section) {
@@ -106,8 +151,8 @@ export async function loadSectionStudyQuestions(section) {
   return batches.flat();
 }
 
-/** Questions for one topic from all sections that are fully completed. */
-export async function loadUnlockedTopicQuestions(sections, topic) {
+/** Questions for one topic from completed sections and full mocks. */
+export async function loadUnlockedTopicQuestions(sections, topic, fullMocks = []) {
   const normalized = topic || 'General';
   const results = [];
 
@@ -117,6 +162,25 @@ export async function loadUnlockedTopicQuestions(sections, topic) {
     questions
       .filter((q) => (q.topic || 'General') === normalized)
       .forEach((q) => results.push(q));
+  }
+
+  for (const mock of fullMocks) {
+    if (!mock.available) continue;
+    const attempt = loadFullMockAttempt(mock.id);
+    if (!isFullMockAttemptComplete(attempt, mock.questionCount ?? 0)) continue;
+    const questions = await loadQuestionsFromCsv(mock.csvPath);
+    questions
+      .filter((q) => (q.topic || 'General') === normalized)
+      .forEach((q) =>
+        results.push({
+          ...q,
+          sectionId: `full-mock-${mock.id}`,
+          sectionTitle: mock.title,
+          roundId: mock.id,
+          roundTitle: mock.title,
+          sourceType: 'fullMock',
+        })
+      );
   }
 
   return results;

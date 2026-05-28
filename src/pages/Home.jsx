@@ -27,23 +27,51 @@ export default function Home() {
   }
 
   return (
-    <div>
+    <div className="home-page">
       <div className="page-header">
-        <h2>Choose a Section</h2>
-        <p>Pick a topic below to start your timed mock test.</p>
+        <h2>Exam preparation</h2>
+        <p>Full-length bank SO mocks or topic-wise practice by subject.</p>
       </div>
 
-      <Link to="/study" className="study-promo-card">
-        <div className="study-promo-icon">📚</div>
-        <div className="study-promo-copy">
-          <h3>Study Review</h3>
-          <p>
-            Review questions, answers, and explanations by topic. Topics unlock when you complete a
-            section&apos;s rounds.
-          </p>
-        </div>
-        <span className="study-promo-arrow">→</span>
-      </Link>
+      <div className="home-featured">
+        <Link to="/full-mocks" className="home-promo home-promo--exam">
+          <div className="home-promo-icon-wrap" aria-hidden>🎯</div>
+          <div className="home-promo-body">
+            <div className="home-promo-head">
+              <h3>Full Mock Tests</h3>
+              <span className="home-promo-pill">Indian Bank SO</span>
+            </div>
+            <p className="home-promo-desc">
+              Real exam pattern with negative marking. Review explanations after each attempt.
+            </p>
+            <div className="home-promo-stats">
+              <span>120 questions</span>
+              <span>180 marks</span>
+              <span>6 mocks</span>
+            </div>
+          </div>
+          <span className="home-promo-cta" aria-hidden>→</span>
+        </Link>
+
+        <Link to="/study" className="home-promo home-promo--study">
+          <div className="home-promo-icon-wrap" aria-hidden>📚</div>
+          <div className="home-promo-body">
+            <div className="home-promo-head">
+              <h3>Study Review</h3>
+              <span className="home-promo-pill">By topic</span>
+            </div>
+            <p className="home-promo-desc">
+              Questions, answers, and explanations grouped for revision after you finish tests.
+            </p>
+          </div>
+          <span className="home-promo-cta" aria-hidden>→</span>
+        </Link>
+      </div>
+
+      <div className="home-sections-heading">
+        <h3 className="home-sections-title">Topic-wise practice</h3>
+        <p className="home-sections-sub">Timed rounds by subject — complete all rounds to unlock study material.</p>
+      </div>
 
       <div className="sections-grid">
         {sections.map((section) => {

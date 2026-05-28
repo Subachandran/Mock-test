@@ -201,7 +201,7 @@ async function main() {
   const sectionIds = entries
     .filter((e) => e.isDirectory())
     .map((e) => e.name)
-    .filter((name) => name !== 'node_modules');
+    .filter((name) => name !== 'node_modules' && name !== 'full-mocks');
 
   const sections = [];
   for (const id of sectionIds) {

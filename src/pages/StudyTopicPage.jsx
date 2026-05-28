@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { useSections } from '../context/SectionsContext';
+import { useFullMocks } from '../context/FullMocksContext';
 import StudyLockMark from '../components/StudyLockMark';
 import StudyQuestionCard from '../components/StudyQuestionCard';
 import StudyTopicLabel from '../components/StudyTopicLabel';
@@ -18,14 +19,15 @@ export default function StudyTopicPage() {
   const { topicSlug } = useParams();
   const topic = slugToTopic(topicSlug);
   const { sections, loading } = useSections();
+  const { mocks: fullMocks } = useFullMocks();
   const [questions, setQuestions] = useState([]);
   const [loadingQuestions, setLoadingQuestions] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [groupBySection, setGroupBySection] = useState(true);
 
   const catalog = useMemo(
-    () => (sections.length ? buildTopicCatalog(sections) : []),
-    [sections]
+    () => (sections.length || fullMocks.length ? buildTopicCatalog(sections, fullMocks) : []),
+    [sections, fullMocks]
   );
 
   const catalogEntry = catalog.find((e) => e.topic === topic);
@@ -42,7 +44,7 @@ export default function StudyTopicPage() {
     setLoadingQuestions(true);
     setLoadError(null);
 
-    loadUnlockedTopicQuestions(sections, topic)
+    loadUnlockedTopicQuestions(sections, topic, fullMocks)
       .then((loaded) => {
         if (!cancelled) setQuestions(loaded);
       })
@@ -56,7 +58,7 @@ export default function StudyTopicPage() {
     return () => {
       cancelled = true;
     };
-  }, [sections, topic, isUnlocked]);
+  }, [sections, fullMocks, topic, isUnlocked]);
 
   const groupedBySection = useMemo(() => {
     const map = new Map();
@@ -114,7 +116,9 @@ export default function StudyTopicPage() {
               <StudyLockMark size="sm" />
               {catalogEntry.totalCount} question{catalogEntry.totalCount !== 1 ? 's' : ''} locked
             </p>
-            <p className="study-topic-card-hint">Complete section rounds to unlock this topic</p>
+            <p className="study-topic-card-hint">
+              Complete section rounds or a full mock to unlock this topic
+            </p>
           </div>
           {primaryLockedSection && (
             <Link
@@ -154,7 +158,7 @@ export default function StudyTopicPage() {
           </span>
           <span className="study-topic-banner-text">
             {catalogEntry.lockedCount} more question
-            {catalogEntry.lockedCount !== 1 ? 's' : ''} locked — finish section rounds to unlock
+            {catalogEntry.lockedCount !== 1 ? 's' : ''} locked — finish sections or full mocks to unlock
           </span>
           {primaryLockedSection && (
             <Link

@@ -213,3 +213,73 @@ export async function loadUnlockedTopicQuestions(sections, topic, fullMocks = []
 
   return results;
 }
+
+/** All unlocked study questions across sections and full mocks (one pass per source). */
+export async function loadAllUnlockedStudyQuestions(sections, fullMocks = []) {
+  const results = [];
+
+  for (const section of sections) {
+    if (
+      !isStudyReviewPromoActive() &&
+      !isSectionComplete(section.id, section.rounds)
+    ) {
+      continue;
+    }
+    const questions = await loadSectionStudyQuestions(section);
+    results.push(...questions);
+  }
+
+  for (const mock of fullMocks) {
+    if (!mock.available) continue;
+    const attempt = loadFullMockAttempt(mock.id);
+    if (
+      !isStudyReviewPromoActive() &&
+      !isFullMockAttemptComplete(attempt, mock.questionCount ?? 0)
+    ) {
+      continue;
+    }
+    const questions = await loadQuestionsFromCsv(mock.csvPath);
+    questions.forEach((q) =>
+      results.push({
+        ...q,
+        sectionId: `full-mock-${mock.id}`,
+        sectionTitle: mock.title,
+        roundId: mock.id,
+        roundTitle: mock.title,
+        sourceType: 'fullMock',
+      })
+    );
+  }
+
+  return results;
+}
+
+export function groupStudyQuestionsByTopic(questions) {
+  const map = new Map();
+  questions.forEach((q) => {
+    const topic = q.topic || 'General';
+    if (!map.has(topic)) map.set(topic, []);
+    map.get(topic).push(q);
+  });
+  return [...map.entries()]
+    .map(([topic, items]) => ({ topic, questions: items }))
+    .sort((a, b) => a.topic.localeCompare(b.topic));
+}
+
+export function groupStudyQuestionsBySection(questions) {
+  const map = new Map();
+  questions.forEach((q) => {
+    const key = q.sectionId || 'unknown';
+    if (!map.has(key)) {
+      map.set(key, {
+        sectionId: key,
+        sectionTitle: q.sectionTitle || 'Section',
+        questions: [],
+      });
+    }
+    map.get(key).questions.push(q);
+  });
+  return [...map.values()].sort((a, b) =>
+    a.sectionTitle.localeCompare(b.sectionTitle)
+  );
+}

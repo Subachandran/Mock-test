@@ -1,5 +1,9 @@
 const STUDY_HUB_UI_KEY = 'mocktest_study_hub_ui';
 
+export const BROWSE_MODES = /** @type {const} */ (['topics', 'questions']);
+export const TOPIC_LAYOUTS = /** @type {const} */ (['flat', 'section']);
+export const QUESTION_GROUPS = /** @type {const} */ (['flat', 'topic', 'section']);
+
 export function loadStudyHubUiState() {
   try {
     const raw = sessionStorage.getItem(STUDY_HUB_UI_KEY);
@@ -24,12 +28,32 @@ export function saveStudyHubUiState(patch) {
   );
 }
 
+function parseBrowseMode(saved) {
+  return saved?.browseMode === 'questions' ? 'questions' : 'topics';
+}
+
+function parseTopicLayout(saved) {
+  if (saved?.topicLayout === 'section') return 'section';
+  if (saved?.topicLayout === 'flat') return 'flat';
+  return saved?.groupBySection ? 'section' : 'flat';
+}
+
+function parseQuestionGroup(saved) {
+  if (QUESTION_GROUPS.includes(saved?.questionGroup)) return saved.questionGroup;
+  return 'topic';
+}
+
 export function getInitialStudyHubUiState() {
   const saved = loadStudyHubUiState();
   return {
-    groupBySection: Boolean(saved?.groupBySection),
+    browseMode: parseBrowseMode(saved),
+    topicLayout: parseTopicLayout(saved),
+    questionGroup: parseQuestionGroup(saved),
     collapsedGroups: new Set(
       Array.isArray(saved?.collapsedGroups) ? saved.collapsedGroups.filter(Boolean) : []
+    ),
+    expandedTopics: new Set(
+      Array.isArray(saved?.expandedTopics) ? saved.expandedTopics.filter(Boolean) : []
     ),
     scrollY: typeof saved?.scrollY === 'number' && saved.scrollY >= 0 ? saved.scrollY : 0,
   };

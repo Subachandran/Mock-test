@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
   getInitialStudyHubUiState,
@@ -8,10 +8,9 @@ import {
 } from '../utils/studyHubState';
 
 /**
- * Persists Study Hub view mode, collapsed section groups, and scroll position
- * in sessionStorage so navigation to/from topic pages restores the UI.
+ * Persists Study Hub browse mode, layout, expanded topics, scroll, etc.
  */
-export function useStudyHubUiPersistence({ ready, sectionGroupKeys }) {
+export function useStudyHubUiPersistence({ ready, sectionGroupKeys, unlockedTopicSlugs }) {
   const location = useLocation();
   const onStudyHub = location.pathname === '/study';
 
@@ -20,8 +19,11 @@ export function useStudyHubUiPersistence({ ready, sectionGroupKeys }) {
   const scrollSaveTimerRef = useRef(null);
   const restoredScrollRef = useRef(false);
 
-  const [groupBySection, setGroupBySection] = useState(initial.current.groupBySection);
+  const [browseMode, setBrowseMode] = useState(initial.current.browseMode);
+  const [topicLayout, setTopicLayout] = useState(initial.current.topicLayout);
+  const [questionGroup, setQuestionGroup] = useState(initial.current.questionGroup);
   const [collapsedGroups, setCollapsedGroups] = useState(initial.current.collapsedGroups);
+  const [expandedTopics, setExpandedTopics] = useState(initial.current.expandedTopics);
 
   useEffect(() => {
     if (!ready || sectionGroupKeys.length === 0) return;
@@ -34,12 +36,25 @@ export function useStudyHubUiPersistence({ ready, sectionGroupKeys }) {
   }, [ready, sectionGroupKeys]);
 
   useEffect(() => {
+    if (!ready || unlockedTopicSlugs.length === 0) return;
+    setExpandedTopics((prev) => {
+      const valid = new Set(unlockedTopicSlugs);
+      const next = new Set([...prev].filter((slug) => valid.has(slug)));
+      if (next.size === prev.size) return prev;
+      return next;
+    });
+  }, [ready, unlockedTopicSlugs]);
+
+  useEffect(() => {
     saveStudyHubUiState({
-      groupBySection,
+      browseMode,
+      topicLayout,
+      questionGroup,
       collapsedGroups: [...collapsedGroups],
+      expandedTopics: [...expandedTopics],
       scrollY: scrollYRef.current,
     });
-  }, [groupBySection, collapsedGroups]);
+  }, [browseMode, topicLayout, questionGroup, collapsedGroups, expandedTopics]);
 
   useEffect(() => {
     if (!onStudyHub) return undefined;
@@ -80,13 +95,38 @@ export function useStudyHubUiPersistence({ ready, sectionGroupKeys }) {
     if (targetY <= 0) return undefined;
 
     return restoreStudyHubScroll(targetY);
-  }, [onStudyHub, ready, groupBySection, sectionGroupKeys.length]);
+  }, [onStudyHub, ready, browseMode, topicLayout, questionGroup, sectionGroupKeys.length]);
+
+  const toggleTopicExpanded = useCallback((slug) => {
+    setExpandedTopics((prev) => {
+      const next = new Set(prev);
+      if (next.has(slug)) next.delete(slug);
+      else next.add(slug);
+      return next;
+    });
+  }, []);
+
+  const expandAllTopics = useCallback((slugs) => {
+    setExpandedTopics(new Set(slugs));
+  }, []);
+
+  const collapseAllTopics = useCallback(() => {
+    setExpandedTopics(new Set());
+  }, []);
 
   return {
-    groupBySection,
-    setGroupBySection,
+    browseMode,
+    setBrowseMode,
+    topicLayout,
+    setTopicLayout,
+    questionGroup,
+    setQuestionGroup,
     collapsedGroups,
     setCollapsedGroups,
+    expandedTopics,
+    toggleTopicExpanded,
+    expandAllTopics,
+    collapseAllTopics,
     saveScrollBeforeLeave: () => saveStudyHubUiState({ scrollY: scrollYRef.current }),
   };
 }

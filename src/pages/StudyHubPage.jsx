@@ -1,31 +1,31 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import StudyHubQuestionsView from '../components/study/StudyHubQuestionsView';
+import StudyHubToolbar from '../components/study/StudyHubToolbar';
+import StudyHubTopicsView from '../components/study/StudyHubTopicsView';
 import { useStudyHubUiPersistence } from '../hooks/useStudyHubUiPersistence';
-import { saveStudyHubScrollNow } from '../utils/studyHubState';
-import { Link } from 'react-router-dom';
-import StudyLockMark from '../components/StudyLockMark';
-import StudyTopicLabel from '../components/StudyTopicLabel';
 import { useSections } from '../context/SectionsContext';
 import { useFullMocks } from '../context/FullMocksContext';
 import {
   buildTopicCatalog,
-  getLockedSectionsForTopic,
   getSectionTopicBreakdown,
   getSectionUnlockState,
   isStudyReviewPromoActive,
   topicToSlug,
 } from '../utils/studyReview';
-import { useTopicStyle } from '../utils/topics';
 import { getSectionProgress, loadFullMockAttempt, isFullMockAttemptComplete } from '../utils/storage';
 
 export default function StudyHubPage() {
   const { sections, loading, error } = useSections();
   const { mocks: fullMocks, loading: mocksLoading } = useFullMocks();
-  const getTopicStyle = useTopicStyle();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const topicCatalog = useMemo(
     () => (sections.length || fullMocks.length ? buildTopicCatalog(sections, fullMocks) : []),
     [sections, fullMocks]
   );
+
+  const catalogByTopic = useMemo(() => new Map(topicCatalog.map((e) => [e.topic, e])), [topicCatalog]);
 
   const sortedTopics = useMemo(
     () =>
@@ -38,7 +38,17 @@ export default function StudyHubPage() {
     [topicCatalog]
   );
 
-  const unlockedTopicCount = topicCatalog.filter((t) => t.unlockedCount > 0).length;
+  const unlockedTopics = useMemo(
+    () => sortedTopics.filter((t) => t.unlockedCount > 0),
+    [sortedTopics]
+  );
+
+  const unlockedTopicSlugs = useMemo(
+    () => unlockedTopics.map((t) => topicToSlug(t.topic)),
+    [unlockedTopics]
+  );
+
+  const unlockedTopicCount = unlockedTopics.length;
   const promoActive = isStudyReviewPromoActive();
 
   const topicsBySection = useMemo(() => {
@@ -46,7 +56,7 @@ export default function StudyHubPage() {
       .map((section) => {
         const topics = getSectionTopicBreakdown(section)
           .map(({ topic, count }) => {
-            const catalogEntry = topicCatalog.find((e) => e.topic === topic);
+            const catalogEntry = catalogByTopic.get(topic);
             const sectionSource = catalogEntry?.sections?.find((s) => s.sectionId === section.id);
             return {
               topic,
@@ -80,7 +90,7 @@ export default function StudyHubPage() {
       .forEach((mock) => {
         const topics = (mock.categories || [])
           .map(({ topic, count }) => {
-            const catalogEntry = topicCatalog.find((e) => e.topic === topic);
+            const catalogEntry = catalogByTopic.get(topic);
             const mockSource = catalogEntry?.fullMocks?.find((m) => m.mockId === mock.id);
             return {
               topic,
@@ -103,7 +113,7 @@ export default function StudyHubPage() {
           groups.push({
             key: `full-mock-${mock.id}`,
             title: mock.title,
-            icon: null,
+            icon: '📝',
             color: '#6366f1',
             topics,
           });
@@ -111,7 +121,7 @@ export default function StudyHubPage() {
       });
 
     return groups;
-  }, [sections, fullMocks, topicCatalog]);
+  }, [sections, fullMocks, catalogByTopic]);
 
   const sectionGroupKeys = useMemo(
     () => topicsBySection.map((g) => g.key),
@@ -120,24 +130,39 @@ export default function StudyHubPage() {
 
   const hubReady = !loading && !mocksLoading && sections.length > 0;
   const {
-    groupBySection,
-    setGroupBySection,
+    browseMode,
+    setBrowseMode,
+    topicLayout,
+    setTopicLayout,
+    questionGroup,
+    setQuestionGroup,
     collapsedGroups,
     setCollapsedGroups,
-    saveScrollBeforeLeave,
-  } = useStudyHubUiPersistence({ ready: hubReady, sectionGroupKeys });
+    expandedTopics,
+    toggleTopicExpanded,
+    expandAllTopics,
+    collapseAllTopics,
+  } = useStudyHubUiPersistence({ ready: hubReady, sectionGroupKeys, unlockedTopicSlugs });
 
-  const handleLeaveForTopic = () => {
-    saveScrollBeforeLeave();
-    saveStudyHubScrollNow();
-  };
+  useEffect(() => {
+    const topicParam = searchParams.get('topic');
+    if (!topicParam || !hubReady) return;
+    setBrowseMode('topics');
+    expandAllTopics([topicParam]);
+    const next = new URLSearchParams(searchParams);
+    next.delete('topic');
+    setSearchParams(next, { replace: true });
+  }, [searchParams, hubReady, setBrowseMode, expandAllTopics, setSearchParams]);
 
-  const allGroupsExpanded =
+  const allSectionsExpanded =
     sectionGroupKeys.length > 0 && sectionGroupKeys.every((key) => !collapsedGroups.has(key));
-  const allGroupsCollapsed =
+  const allSectionsCollapsed =
     sectionGroupKeys.length > 0 && sectionGroupKeys.every((key) => collapsedGroups.has(key));
+  const allTopicsExpanded =
+    unlockedTopicSlugs.length > 0 && unlockedTopicSlugs.every((slug) => expandedTopics.has(slug));
+  const allTopicsCollapsed = expandedTopics.size === 0;
 
-  function toggleGroupCollapsed(key) {
+  function toggleSectionCollapsed(key) {
     setCollapsedGroups((prev) => {
       const next = new Set(prev);
       if (next.has(key)) next.delete(key);
@@ -146,98 +171,47 @@ export default function StudyHubPage() {
     });
   }
 
-  function expandAllGroups() {
-    setCollapsedGroups(() => new Set());
+  function expandAllSections() {
+    setCollapsedGroups(new Set());
   }
 
-  function collapseAllGroups() {
-    setCollapsedGroups(() => new Set(sectionGroupKeys));
+  function collapseAllSections() {
+    setCollapsedGroups(new Set(sectionGroupKeys));
   }
 
-  function renderTopicCard(entry, { scopedSource } = {}) {
-    const style = getTopicStyle(entry.topic);
-    const isUnlocked = scopedSource
-      ? scopedSource.unlocked
-      : entry.unlockedCount > 0;
-    const availableCount = scopedSource ? scopedSource.count : entry.unlockedCount;
-    const lockedCount = scopedSource
-      ? scopedSource.unlocked
-        ? 0
-        : scopedSource.count
-      : entry.lockedCount;
-    const lockedSections = getLockedSectionsForTopic(entry);
-    const unlockMockId = scopedSource?.mockId ?? null;
-    const primaryLockedSection = scopedSource?.sectionId
-      ? { sectionId: scopedSource.sectionId }
-      : lockedSections[0];
+  const usesSections =
+    (browseMode === 'topics' && topicLayout === 'section') ||
+    (browseMode === 'questions' && questionGroup === 'section');
+  const usesTopics =
+    browseMode === 'topics' ||
+    (browseMode === 'questions' && questionGroup === 'topic');
 
-    if (isUnlocked) {
-      return (
-        <Link
-          key={scopedSource ? `${entry.topic}-${scopedSource.sectionId ?? scopedSource.mockId}` : entry.topic}
-          to={`/study/topic/${topicToSlug(entry.topic)}`}
-          className="study-topic-card study-topic-card-unlocked"
-          style={{ '--topic-accent': style.accent }}
-          onClick={handleLeaveForTopic}
-        >
-          <div className="study-topic-card-body">
-            <StudyTopicLabel topic={entry.topic} style={style} />
-            <span className="study-topic-card-meta">
-              <span>{availableCount} available</span>
-              {!scopedSource && lockedCount > 0 && (
-                <span className="study-topic-card-meta-locked">
-                  <StudyLockMark size="sm" />
-                  {lockedCount} locked
-                </span>
-              )}
-            </span>
-          </div>
-          <span className="study-topic-card-arrow" aria-hidden>
-            →
-          </span>
-        </Link>
-      );
-    }
-
-    return (
-      <div
-        key={scopedSource ? `${entry.topic}-${scopedSource.sectionId ?? scopedSource.mockId}` : entry.topic}
-        className="study-topic-card study-topic-card-locked"
-        style={{ '--topic-accent': style.accent }}
-      >
-        <div className="study-topic-card-body">
-          <StudyTopicLabel topic={entry.topic} style={style} />
-          <p className="study-topic-card-status">
-            <StudyLockMark size="sm" />
-            {(scopedSource ? scopedSource.count : entry.totalCount)} question
-            {(scopedSource ? scopedSource.count : entry.totalCount) !== 1 ? 's' : ''} locked
-          </p>
-          <p className="study-topic-card-hint">
-            {unlockMockId ? 'Complete this full mock to unlock' : 'Complete section rounds to unlock'}
-          </p>
-        </div>
-        {unlockMockId ? (
-          <Link
-            to={`/full-mocks/${unlockMockId}`}
-            className="btn btn-primary btn-sm study-topic-unlock-btn"
-            aria-label={`Unlock ${entry.topic}`}
-          >
-            Unlock
-          </Link>
-        ) : (
-          primaryLockedSection && (
-            <Link
-              to={`/section/${primaryLockedSection.sectionId}`}
-              className="btn btn-primary btn-sm study-topic-unlock-btn"
-              aria-label={`Unlock ${entry.topic}`}
-            >
-              Unlock
-            </Link>
-          )
-        )}
-      </div>
-    );
+  function handleExpandAll() {
+    if (usesSections) expandAllSections();
+    if (usesTopics) expandAllTopics(unlockedTopicSlugs);
   }
+
+  function handleCollapseAll() {
+    if (usesSections) collapseAllSections();
+    if (usesTopics) collapseAllTopics();
+  }
+
+  const expandAllDisabled =
+    browseMode === 'questions' && questionGroup === 'flat'
+      ? true
+      : (usesSections && allSectionsExpanded && (!usesTopics || allTopicsExpanded)) ||
+        (!usesSections && usesTopics && allTopicsExpanded);
+
+  const collapseAllDisabled =
+    browseMode === 'questions' && questionGroup === 'flat'
+      ? true
+      : (usesSections && allSectionsCollapsed && (!usesTopics || allTopicsCollapsed)) ||
+        (!usesSections && usesTopics && allTopicsCollapsed);
+
+  const totalUnlockedQuestions = useMemo(
+    () => topicCatalog.reduce((sum, t) => sum + t.unlockedCount, 0),
+    [topicCatalog]
+  );
 
   if (loading || mocksLoading) {
     return (
@@ -270,8 +244,8 @@ export default function StudyHubPage() {
         <h2>Study Review</h2>
         <p>
           {promoActive
-            ? 'All topics are unlocked for exam prep through May 31. Browse questions and explanations by topic.'
-            : 'Browse questions and explanations by topic. Complete section rounds or a full mock to unlock topics here.'}
+            ? 'All content is unlocked for exam prep through May 31. Expand topics to read questions inline, or switch to Questions for continuous review.'
+            : 'Expand topics to review questions and explanations here, or browse all unlocked questions at once.'}
         </p>
       </div>
 
@@ -285,12 +259,12 @@ export default function StudyHubPage() {
 
       <div className="study-summary-bar">
         <div className="study-summary-stat">
-          <span className="study-summary-value">{topicCatalog.length}</span>
-          <span className="study-summary-label">topics listed</span>
-        </div>
-        <div className="study-summary-stat">
           <span className="study-summary-value">{unlockedTopicCount}</span>
           <span className="study-summary-label">topics unlocked</span>
+        </div>
+        <div className="study-summary-stat">
+          <span className="study-summary-value">{totalUnlockedQuestions}</span>
+          <span className="study-summary-label">questions available</span>
         </div>
         <div className="study-summary-stat">
           <span className="study-summary-value">{sections.length}</span>
@@ -299,239 +273,151 @@ export default function StudyHubPage() {
       </div>
 
       <section className="study-block study-block-primary">
-        <h3 className="study-block-title">By topic</h3>
-        <p className="study-block-desc">
-          Locked topics need their section rounds finished first. Unlocked topics open for review.
-        </p>
+        <StudyHubToolbar
+          browseMode={browseMode}
+          onBrowseModeChange={setBrowseMode}
+          topicLayout={topicLayout}
+          onTopicLayoutChange={setTopicLayout}
+          questionGroup={questionGroup}
+          onQuestionGroupChange={setQuestionGroup}
+          onExpandAll={handleExpandAll}
+          onCollapseAll={handleCollapseAll}
+          expandAllDisabled={expandAllDisabled}
+          collapseAllDisabled={collapseAllDisabled}
+          expandLabel={browseMode === 'topics' ? 'Expand all topics' : 'Expand all'}
+          collapseLabel={browseMode === 'topics' ? 'Collapse all topics' : 'Collapse all'}
+        />
 
-        <div className="study-hub-toolbar">
-          <div className="study-hub-toolbar-main">
-            <span className="study-hub-toolbar-label">View</span>
-            <div className="study-view-switch" role="group" aria-label="Topic list view">
-              <button
-                type="button"
-                className={`study-view-switch-btn ${!groupBySection ? 'is-active' : ''}`}
-                onClick={() => setGroupBySection(false)}
-                aria-pressed={!groupBySection}
-              >
-                All topics
-              </button>
-              <button
-                type="button"
-                className={`study-view-switch-btn ${groupBySection ? 'is-active' : ''}`}
-                onClick={() => setGroupBySection(true)}
-                aria-pressed={groupBySection}
-              >
-                By section
-              </button>
-            </div>
-          </div>
-          {groupBySection && sectionGroupKeys.length > 0 && (
-            <div className="study-hub-toolbar-actions" role="group" aria-label="Section groups">
-              <button
-                type="button"
-                className="btn btn-ghost btn-sm study-hub-toolbar-action"
-                onClick={expandAllGroups}
-                disabled={allGroupsExpanded}
-              >
-                Expand all
-              </button>
-              <span className="study-hub-toolbar-divider" aria-hidden />
-              <button
-                type="button"
-                className="btn btn-ghost btn-sm study-hub-toolbar-action"
-                onClick={collapseAllGroups}
-                disabled={allGroupsCollapsed}
-              >
-                Collapse all
-              </button>
-            </div>
-          )}
-        </div>
+        <p className="study-block-desc study-hub-browse-hint">
+          {browseMode === 'topics'
+            ? topicLayout === 'section'
+              ? 'Sections and topics are nested. Expand a topic to load its questions without leaving this page.'
+              : 'Topics are A–Z. Expand any topic to read questions and explanations inline.'
+            : questionGroup === 'flat'
+              ? 'All unlocked questions in one scrollable list.'
+              : questionGroup === 'topic'
+                ? 'Questions grouped by topic — expand a topic to focus.'
+                : 'Questions grouped by section — expand a section to read them all.'}
+        </p>
 
         {sortedTopics.length === 0 ? (
           <div className="empty-state" style={{ padding: '2rem 1rem' }}>
             <p>No topics found in section CSVs yet.</p>
           </div>
-        ) : groupBySection ? (
-          <div className="review-grouped study-hub-grouped">
-            {topicsBySection.map((group) => {
-              const expanded = !collapsedGroups.has(group.key);
-              return (
-                <div
-                  key={group.key}
-                  className={`review-topic-group study-hub-section-group ${expanded ? 'is-expanded' : 'is-collapsed'}`}
-                >
-                  <button
-                    type="button"
-                    className="review-topic-heading study-hub-section-heading study-hub-section-toggle"
-                    style={{ '--section-accent': group.color }}
-                    onClick={() => toggleGroupCollapsed(group.key)}
-                    aria-expanded={expanded}
-                    aria-controls={`study-hub-group-${group.key}`}
-                  >
-                    <span className="study-hub-collapse-chevron" aria-hidden />
-                    {group.icon && (
-                      <span className="study-hub-section-heading-icon" aria-hidden>
-                        {group.icon}
-                      </span>
-                    )}
-                    <span className="study-hub-section-heading-title">{group.title}</span>
-                    <span className="review-topic-count">
-                      {group.topics.length} topic{group.topics.length !== 1 ? 's' : ''}
-                    </span>
-                  </button>
-                  {expanded && (
-                    <div
-                      id={`study-hub-group-${group.key}`}
-                      className="study-topic-list study-hub-section-topics"
-                    >
-                      {group.topics.map(({ topic, catalogEntry, source }) =>
-                        renderTopicCard(catalogEntry ?? { topic }, { scopedSource: source })
-                      )}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+        ) : browseMode === 'topics' ? (
+          <StudyHubTopicsView
+            topicLayout={topicLayout}
+            sortedTopics={sortedTopics}
+            topicsBySection={topicsBySection}
+            catalogByTopic={catalogByTopic}
+            collapsedGroups={collapsedGroups}
+            expandedTopics={expandedTopics}
+            onToggleSection={toggleSectionCollapsed}
+            onToggleTopic={toggleTopicExpanded}
+            sections={sections}
+            fullMocks={fullMocks}
+          />
         ) : (
-          <div className="study-topic-list">
-            {sortedTopics.map((entry) => renderTopicCard(entry))}
-          </div>
+          <StudyHubQuestionsView
+            sections={sections}
+            fullMocks={fullMocks}
+            questionGroup={questionGroup}
+            collapsedGroups={collapsedGroups}
+            expandedTopics={expandedTopics}
+            onToggleSection={toggleSectionCollapsed}
+            onToggleTopic={toggleTopicExpanded}
+          />
         )}
       </section>
 
-      <section className="study-block study-block-secondary">
-        <h3 className="study-block-title">Full mock tests</h3>
-        <p className="study-block-desc">
-          Complete a full mock to add its questions to Study Review by topic.
-        </p>
-        <div className="full-mock-list" style={{ marginBottom: '1.5rem' }}>
-          {fullMocks.map((mock) => {
-            const attempt = loadFullMockAttempt(mock.id);
-            const complete =
-              mock.available &&
-              isFullMockAttemptComplete(attempt, mock.questionCount ?? 0);
-            return (
-              <Link
-                key={mock.id}
-                to={mock.available ? `/full-mocks/${mock.id}` : '/full-mocks'}
-                className={`full-mock-card ${mock.available ? 'full-mock-card-available' : 'full-mock-card-locked'}`}
-              >
-                <div className="full-mock-card-body">
-                  <h3>{mock.title}</h3>
-                  <p className="full-mock-card-meta">
-                    {mock.available
-                      ? `${mock.questionCount} questions`
-                      : 'Coming soon'}
-                  </p>
-                </div>
-                <span className={`badge ${complete ? 'badge-success' : ''}`}>
-                  {complete ? '✓ Unlocks study' : mock.available ? 'Take mock' : 'Locked'}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      <section className="study-block study-block-secondary">
-        <h3 className="study-block-title">By section</h3>
-        <p className="study-block-desc">
-          Each section stays locked until every round in it is finished. Finishing unlocks all of
-          its topics above.
-        </p>
-
-        <div className="study-section-list">
-          {sections.map((section) => {
-            const { complete, topics } = getSectionUnlockState(section);
-            const progress = getSectionProgress(section.id, section.rounds);
-            const doneRounds = progress.filter((p) => p.completed).length;
-            const style = section.color || '#6366f1';
-
-            return (
-              <div
-                key={section.id}
-                className={`study-section-card ${complete ? 'study-section-unlocked' : 'study-section-locked'}`}
-                style={{ '--card-accent': style }}
-              >
-                <div className="study-section-card-header">
-                  <div
-                    className="section-icon"
-                    style={{ background: `${style}1a` }}
+      <details className="study-hub-details">
+        <summary className="study-hub-details-summary">Progress &amp; unlocks</summary>
+        <div className="study-hub-details-body">
+          <section className="study-block study-block-secondary">
+            <h3 className="study-block-title">Full mock tests</h3>
+            <p className="study-block-desc">
+              Complete a full mock to add its questions to Study Review.
+            </p>
+            <div className="full-mock-list">
+              {fullMocks.map((mock) => {
+                const attempt = loadFullMockAttempt(mock.id);
+                const complete =
+                  mock.available &&
+                  isFullMockAttemptComplete(attempt, mock.questionCount ?? 0);
+                return (
+                  <Link
+                    key={mock.id}
+                    to={mock.available ? `/full-mocks/${mock.id}` : '/full-mocks'}
+                    className={`full-mock-card ${mock.available ? 'full-mock-card-available' : 'full-mock-card-locked'}`}
                   >
-                    {section.icon}
-                  </div>
-                  <div className="study-section-card-copy">
-                    <h4>{section.title}</h4>
-                    <p>{section.description}</p>
-                  </div>
-                </div>
+                    <div className="full-mock-card-body">
+                      <h3>{mock.title}</h3>
+                      <p className="full-mock-card-meta">
+                        {mock.available
+                          ? `${mock.questionCount} questions`
+                          : 'Coming soon'}
+                      </p>
+                    </div>
+                    <span className={`badge ${complete ? 'badge-success' : ''}`}>
+                      {complete ? '✓ Unlocks study' : mock.available ? 'Take mock' : 'Locked'}
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
 
-                <div className="study-section-status">
-                  <span className={`study-section-badge ${complete ? 'unlocked' : 'locked'}`}>
-                    {complete ? 'Unlocked' : '🔒 Locked'}
-                  </span>
-                  {complete ? (
-                    <span className="badge badge-success">All rounds complete</span>
-                  ) : (
-                    <>
-                      <span className="badge">
-                        {doneRounds}/{section.rounds.length} rounds done
+          <section className="study-block study-block-secondary">
+            <h3 className="study-block-title">Section progress</h3>
+            <p className="study-block-desc">
+              Finish every round in a section to unlock its topics for study.
+            </p>
+            <div className="study-section-list">
+              {sections.map((section) => {
+                const { complete } = getSectionUnlockState(section);
+                const progress = getSectionProgress(section.id, section.rounds);
+                const doneRounds = progress.filter((p) => p.completed).length;
+                const style = section.color || '#6366f1';
+
+                return (
+                  <div
+                    key={section.id}
+                    className={`study-section-card ${complete ? 'study-section-unlocked' : 'study-section-locked'}`}
+                    style={{ '--card-accent': style }}
+                  >
+                    <div className="study-section-card-header">
+                      <div className="section-icon" style={{ background: `${style}1a` }}>
+                        {section.icon}
+                      </div>
+                      <div className="study-section-card-copy">
+                        <h4>{section.title}</h4>
+                        <p>{section.description}</p>
+                      </div>
+                    </div>
+                    <div className="study-section-status">
+                      <span className={`study-section-badge ${complete ? 'unlocked' : 'locked'}`}>
+                        {complete ? 'Unlocked' : '🔒 Locked'}
                       </span>
-                      <Link to={`/section/${section.id}`} className="btn btn-primary btn-sm">
-                        Continue section
-                      </Link>
-                    </>
-                  )}
-                </div>
-
-                {topics.length > 0 && (
-                  <div className="study-section-topics">
-                    {topics.map(({ topic, count }) => {
-                      const topicStyle = getTopicStyle(topic);
-                      const topicUnlocked = complete;
-                      const chip = (
-                        <span
-                          className={`study-section-topic-chip ${topicUnlocked ? 'unlocked' : 'locked'}`}
-                          style={
-                            topicUnlocked
-                              ? {
-                                  color: topicStyle.text,
-                                  background: topicStyle.bg,
-                                  border: `1px solid ${topicStyle.border}`,
-                                }
-                              : {}
-                          }
-                        >
-                          {!topicUnlocked && <span aria-hidden>🔒 </span>}
-                          {topic}
-                          <span className="study-section-topic-count">{count}</span>
-                        </span>
-                      );
-
-                      if (topicUnlocked) {
-                        return (
-                          <Link
-                            key={topic}
-                            to={`/study/topic/${topicToSlug(topic)}`}
-                            className="study-section-topic-link"
-                            onClick={handleLeaveForTopic}
-                          >
-                            {chip}
+                      {complete ? (
+                        <span className="badge badge-success">All rounds complete</span>
+                      ) : (
+                        <>
+                          <span className="badge">
+                            {doneRounds}/{section.rounds.length} rounds done
+                          </span>
+                          <Link to={`/section/${section.id}`} className="btn btn-primary btn-sm">
+                            Continue
                           </Link>
-                        );
-                      }
-                      return <span key={topic} className="study-section-topic-link">{chip}</span>;
-                    })}
+                        </>
+                      )}
+                    </div>
                   </div>
-                )}
-              </div>
-            );
-          })}
+                );
+              })}
+            </div>
+          </section>
         </div>
-      </section>
+      </details>
 
       <div style={{ marginTop: '2rem' }}>
         <Link to="/" className="btn btn-ghost">

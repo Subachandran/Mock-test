@@ -1,4 +1,4 @@
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from 'react-router-dom';
 import { isQuizActive, setQuizActive } from '../hooks/useQuizLeaveGuard';
 
 export default function Layout() {
@@ -22,6 +22,7 @@ export default function Layout() {
 
   return (
     <div className="app-layout">
+      <ScrollRestoration getKey={(location) => location.pathname} />
       <header className="app-header">
         <div className="app-header-inner">
           <Link

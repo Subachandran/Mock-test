@@ -1,6 +1,20 @@
 import { loadQuestionsFromCsv } from './csvParser';
 import { isSectionComplete, isFullMockAttemptComplete, loadFullMockAttempt } from './storage';
 
+/** Local start/end for temporary full Study Review access (exam prep). */
+const STUDY_REVIEW_PROMO_START = new Date(2026, 4, 30, 0, 0, 0, 0);
+const STUDY_REVIEW_PROMO_END = new Date(2026, 4, 31, 23, 59, 59, 999);
+
+/** True during the promo window — all topics and questions are available without completing tests. */
+export function isStudyReviewPromoActive() {
+  const now = Date.now();
+  return now >= STUDY_REVIEW_PROMO_START.getTime() && now <= STUDY_REVIEW_PROMO_END.getTime();
+}
+
+function isSourceUnlockedForStudy(sectionOrMockUnlocked) {
+  return isStudyReviewPromoActive() || sectionOrMockUnlocked;
+}
+
 export function topicToSlug(topic) {
   return encodeURIComponent(topic || 'General');
 }
@@ -62,7 +76,9 @@ export function buildTopicCatalog(sections, fullMocks = []) {
   const catalog = new Map();
 
   sections.forEach((section) => {
-    const unlocked = isSectionComplete(section.id, section.rounds);
+    const unlocked = isSourceUnlockedForStudy(
+      isSectionComplete(section.id, section.rounds)
+    );
     const topics = getSectionTopicBreakdown(section);
 
     topics.forEach(({ topic, count }) => {
@@ -88,7 +104,9 @@ export function buildTopicCatalog(sections, fullMocks = []) {
   fullMocks.forEach((mock) => {
     if (!mock.available) return;
     const attempt = loadFullMockAttempt(mock.id);
-    const unlocked = isFullMockAttemptComplete(attempt, mock.questionCount ?? 0);
+    const unlocked = isSourceUnlockedForStudy(
+      isFullMockAttemptComplete(attempt, mock.questionCount ?? 0)
+    );
     (mock.categories || []).forEach(({ topic, count }) => {
       addTopicToCatalog(catalog, {
         topic,
@@ -157,7 +175,12 @@ export async function loadUnlockedTopicQuestions(sections, topic, fullMocks = []
   const results = [];
 
   for (const section of sections) {
-    if (!isSectionComplete(section.id, section.rounds)) continue;
+    if (
+      !isStudyReviewPromoActive() &&
+      !isSectionComplete(section.id, section.rounds)
+    ) {
+      continue;
+    }
     const questions = await loadSectionStudyQuestions(section);
     questions
       .filter((q) => (q.topic || 'General') === normalized)
@@ -167,7 +190,12 @@ export async function loadUnlockedTopicQuestions(sections, topic, fullMocks = []
   for (const mock of fullMocks) {
     if (!mock.available) continue;
     const attempt = loadFullMockAttempt(mock.id);
-    if (!isFullMockAttemptComplete(attempt, mock.questionCount ?? 0)) continue;
+    if (
+      !isStudyReviewPromoActive() &&
+      !isFullMockAttemptComplete(attempt, mock.questionCount ?? 0)
+    ) {
+      continue;
+    }
     const questions = await loadQuestionsFromCsv(mock.csvPath);
     questions
       .filter((q) => (q.topic || 'General') === normalized)

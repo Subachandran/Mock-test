@@ -1485,6 +1485,139 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-size: 0.8rem;
 }
 
+.study-hub-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.study-hub-toolbar-main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.study-hub-toolbar-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+.study-view-switch {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.study-view-switch-btn {
+  padding: 0.4rem 0.85rem;
+  border: none;
+  border-radius: calc(var(--radius-sm) - 2px);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color var(--transition), background var(--transition), box-shadow var(--transition);
+  white-space: nowrap;
+}
+.study-view-switch-btn:hover:not(.is-active) {
+  color: var(--text);
+  background: var(--surface-2);
+}
+.study-view-switch-btn.is-active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.study-view-switch-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.study-hub-toolbar-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  flex-shrink: 0;
+}
+.study-hub-toolbar-action {
+  font-weight: 600;
+}
+.study-hub-toolbar-divider {
+  width: 1px;
+  height: 1.1rem;
+  background: var(--border);
+  margin: 0 0.15rem;
+}
+.study-hub-grouped.review-grouped {
+  gap: 0.65rem;
+}
+
+.study-hub-section-group {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  overflow: hidden;
+}
+.study-hub-section-toggle {
+  width: 100%;
+  margin: 0;
+  padding: 0.65rem 0.85rem;
+  border: none;
+  border-bottom: 1px solid transparent;
+  background: var(--bg-raised);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: background var(--transition), border-color var(--transition);
+}
+.study-hub-section-toggle:hover {
+  background: var(--surface-2);
+}
+.study-hub-section-group.is-expanded .study-hub-section-toggle {
+  border-bottom-color: var(--border);
+}
+.study-hub-section-heading {
+  color: var(--text);
+}
+.study-hub-section-heading-title {
+  flex: 1;
+  min-width: 0;
+  font-weight: 800;
+}
+.study-hub-section-heading-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.study-hub-collapse-chevron {
+  flex-shrink: 0;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-right: 0.15rem;
+  border-right: 2px solid var(--section-accent, var(--text-muted));
+  border-bottom: 2px solid var(--section-accent, var(--text-muted));
+  transform: rotate(45deg);
+  transition: transform var(--transition);
+}
+.study-hub-section-group.is-collapsed .study-hub-collapse-chevron {
+  transform: rotate(-45deg);
+}
+.study-hub-section-topics {
+  padding: 0.5rem;
+}
+
 .study-topic-list {
   display: flex;
   flex-direction: column;
@@ -2032,6 +2165,28 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .study-promo-card p { font-size: 0.78rem; line-height: 1.4; }
   .study-promo-arrow { font-size: 1rem; }
   .study-section-list { gap: 1rem; }
+  .study-hub-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .study-hub-toolbar-main {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .study-view-switch {
+    flex: 1;
+    justify-content: stretch;
+  }
+  .study-view-switch-btn {
+    flex: 1;
+    text-align: center;
+  }
+  .study-hub-toolbar-actions {
+    width: 100%;
+    justify-content: center;
+    padding-top: 0.35rem;
+    border-top: 1px solid var(--border);
+  }
   .study-topic-card-arrow { display: none; }
   .study-topic-card-unlocked .study-topic-card-body {
     flex-direction: column;
